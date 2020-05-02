@@ -12,5 +12,5 @@ public interface ServiceSupplier {
 
     List<ResponseSupplierAndBarang> getSupplierAndBarangList();
 
-    ResponseSupplier create(RequestSupplier request);
+    ResponseSupplier create( RequestSupplier request );
 }

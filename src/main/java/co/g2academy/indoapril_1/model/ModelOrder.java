@@ -18,8 +18,7 @@ import java.io.Serializable;
 @EntityListeners(AuditingEntityListener.class)
 public class ModelOrder implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int no;
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private String Id_Order;
     private Integer Qty_Total;
     private String Tgl_Order;

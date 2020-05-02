@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class UserResponse {
+
     private int id_User;
     private String nama_User;
     private String username;
@@ -16,8 +17,15 @@ public class UserResponse {
     private String telephon_user;
     private String status;
 
-
-    public UserResponse(int id_User, String nama_User, String username, String password, String alamat_penempatan, String telephon_user, String status) {
+    public UserResponse(
+            int id_User,
+            String nama_User,
+            String username,
+            String password,
+            String alamat_penempatan,
+            String telephon_user,
+            String status
+    ) {
         this.id_User = id_User;
         this.nama_User = nama_User;
         this.username = username;
@@ -26,4 +34,5 @@ public class UserResponse {
         this.telephon_user = telephon_user;
         this.status = status;
     }
+
 }

@@ -1,4 +1,3 @@
-
 package co.g2academy.indoapril_1.model;
 
 import lombok.AllArgsConstructor;
@@ -18,10 +17,15 @@ import java.io.Serializable;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class ModelOrderDetail implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int No;
     private String Id_Order;
     private Integer Id_Barang;
     private Integer Qty_Detail;
+    private String Tgl_Order;
+    private String Nama_Barang;
+    private String Alamat_Penempatan;
+
 }

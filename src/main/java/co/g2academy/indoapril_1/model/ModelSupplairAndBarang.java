@@ -5,10 +5,7 @@
 //}
 package co.g2academy.indoapril_1.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -30,9 +27,10 @@ public class ModelSupplairAndBarang implements Serializable {
     private String Nama_Supplier;
     private String Alamat_Supplier;
     private String Telepon_Supplier;
-//    private String Nama_Barang;
-//    private Integer Qty_Min_Stock;
-//    private Integer Qty_Stock;
-//    private String Satuan;
-//    private Integer Harga_Barang;
+    private String Nama_Barang;
+    private Integer Qty_Min_Stock;
+    private Integer Qty_Stock;
+    private String Satuan;
+    private Integer Harga_Barang;
 }
+

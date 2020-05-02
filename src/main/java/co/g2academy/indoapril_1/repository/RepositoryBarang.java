@@ -8,17 +8,24 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 public interface RepositoryBarang extends JpaRepository<ModelBarang, Integer> {
 
-    @Transactional
-    @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE tb_barang set qty_stock = qty_stock - :qtyOrder WHERE id_barang =:idBarang", nativeQuery = true)
-    void decreaseByOrder(@Param("qtyOrder") Integer qtyOrder, @Param("idBarang") Integer idBarang);
+    @Query(value = "SELECT * FROM tb_barang WHERE id_barang = :idBarang", nativeQuery = true)
+    ModelBarang findBarangById( @Param("idBarang") Integer idBarang );
 
     @Transactional
     @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE tb_barang set qty_stock = qty_stock + :qtyMasuk WHERE id_barang =:idBarang", nativeQuery = true)
-    void addByBarangMasuk(@Param("qtyMasuk") Integer qtyMasuk, @Param("idBarang") Integer idBarang);
+    @Query(value = "UPDATE tb_barang SET qty_stock = qty_stock - :qtyOrder WHERE id_barang = :idBarang", nativeQuery = true)
+    void decreaseByOrder( @Param("qtyOrder") Integer qtyOrder, @Param("idBarang") Integer idBarang );
 
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE tb_barang SET qty_stock = qty_stock + :qtyMasuk WHERE id_barang = :idBarang", nativeQuery = true)
+    void addByBarangMasuk( @Param("qtyMasuk") Integer qtyMasuk, @Param("idBarang") Integer idBarang );
+
+    @Query(value = "SELECT * FROM tb_barang ORDER BY(id_barang) ",nativeQuery = true)
+    List<ModelBarang> getReportBarang( @Param("tglMulai") String tglMulai, @Param("tglAkhir") String tglAkhir );
 }

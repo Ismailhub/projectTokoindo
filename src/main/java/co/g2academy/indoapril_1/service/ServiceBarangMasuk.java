@@ -10,5 +10,7 @@ public interface ServiceBarangMasuk {
     List<ResponseBarangMasuk> getBarangMasukList();
 
     //Tambah Data Barang Masuk:
-    ResponseBarangMasuk create(RequestBarangMasuk request);
+    ResponseBarangMasuk create( RequestBarangMasuk request );
+
+    boolean findIdBarang( Integer idBarang );
 }

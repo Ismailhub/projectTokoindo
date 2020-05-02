@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -22,8 +23,7 @@ public class SupplierModel implements Serializable {
     private int Id_Supplier;
     private String Nama_Supplier;
     private String Alamat_Supplier;
-    private String Kota_Supplier;
-    private String Provinsi_Supplier;
     private String Telepon_Supplier;
-    private String Status;
+
+
 }

@@ -17,7 +17,12 @@ public class BaseResponse <T> {
 
     public String getMessage() { return message; }
 
-    public BaseResponse (HttpStatus code, String status, T data, String message){
+    public BaseResponse (
+            HttpStatus code,
+            String status,
+            T data,
+            String message
+    ){
         this.code = code;
         this.status = status;
         this.data = data;

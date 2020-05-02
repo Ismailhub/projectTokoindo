@@ -20,32 +20,44 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Repository("ServiceSupplier")
 public class ServiceSupplierImpl implements ServiceSupplier {
+
     private RepositorySupplier repository;
+
     private RepositorySupplierAndBarang repositorySNB;
 
     // menampilkan semua supplier
     @Override
     public List<ResponseSupplier> getSupplierList(){
-        return repository.findAll().stream().map(this::toResponseSupplierSimpel).collect(Collectors.toList());
+
+        return repository.findAll()
+                .stream()
+                .map(this::toResponseSupplierSimpel)
+                .collect(Collectors.toList());
+
     }
-    private ResponseSupplier toResponseSupplierSimpel(SupplierModel entity){
-        return new ResponseSupplier(entity.getId_Supplier(),
+
+    private ResponseSupplier toResponseSupplierSimpel( SupplierModel entity ){
+        return new ResponseSupplier(
+                entity.getId_Supplier(),
                 entity.getNama_Supplier(),
                 entity.getAlamat_Supplier(),
-                entity.getKota_Supplier(),
-                entity.getProvinsi_Supplier(),
-                entity.getTelepon_Supplier(),
-                entity.getStatus()
+                entity.getTelepon_Supplier()
         );
     }
 
+    // menampilkan supplier dan barangnya
     @Override
     public List<ResponseSupplierAndBarang> getSupplierAndBarangList(){
 
-        return  repositorySNB.getSupplierAndBarangList().stream().map(this::toResponseSupplierAndBarangSimpel).collect(Collectors.toList());
+        return  repositorySNB.getSupplierAndBarangList()
+                .stream()
+                .map( this::toResponseSupplierAndBarangSimpel )
+                .collect( Collectors.toList() );
+
     }
-    private ResponseSupplierAndBarang toResponseSupplierAndBarangSimpel(ModelSupplairAndBarang entity){
-        System.out.println("entity = "+entity);
+
+    private ResponseSupplierAndBarang toResponseSupplierAndBarangSimpel( ModelSupplairAndBarang entity ){
+
         return new ResponseSupplierAndBarang(
                 entity.getId_Supplier(),
                 entity.getNama_Supplier(),
@@ -58,27 +70,33 @@ public class ServiceSupplierImpl implements ServiceSupplier {
                 entity.getSatuan(),
                 entity.getHarga_Barang()
         );
+
     }
+
 
     // menambah data supplier
     @Override
     @Transactional
-    public ResponseSupplier create(RequestSupplier request){
-        System.out.println(request);
-        SupplierModel entity = toEntity(request);
-        SupplierModel saveEntity = repository.save(entity);
-        return toResponseSupplierSimpel(saveEntity);
+    public ResponseSupplier create( RequestSupplier request ){
+
+        SupplierModel entity = toEntity( request );
+
+        SupplierModel saveEntity = repository.save( entity );
+
+        return toResponseSupplierSimpel( saveEntity );
+
     }
-    private SupplierModel toEntity(RequestSupplier request){
-        return SupplierModel.builder()
+
+    private SupplierModel toEntity( RequestSupplier request ){
+
+        return SupplierModel
+                .builder()
                 .Id_Supplier(request.getId_Supplier())
                 .Nama_Supplier(request.getNama_Supplier())
                 .Alamat_Supplier(request.getAlamat_Supplier())
-                .Kota_Supplier(request.getKota_Supplier())
-                .Provinsi_Supplier(request.getProvinsi_Supplier())
                 .Telepon_Supplier(request.getTelepon_Supplier())
-                .Status(request.getStatus())
                 .build();
+
     }
 
 }

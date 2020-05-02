@@ -6,6 +6,7 @@ import co.g2academy.indoapril_1.repository.RepositoryBarang;
 import co.g2academy.indoapril_1.repository.RepositoryOrder;
 import co.g2academy.indoapril_1.repository.RepositoryOrderDetail;
 import co.g2academy.indoapril_1.request.RequestOrder;
+import co.g2academy.indoapril_1.request.RequestOrderTgl;
 import co.g2academy.indoapril_1.response.ResponseOrder;
 import co.g2academy.indoapril_1.service.ServiceOrder;
 import lombok.AllArgsConstructor;
@@ -18,19 +19,23 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 @Repository("ServiceOrder")
 public class ServiceOrderImpl implements ServiceOrder {
+
     private RepositoryBarang repositoryBarang;
+
     private RepositoryOrderDetail repositoryDetail;
+
     private RepositoryOrder repositoryOrder;
 
     //Menambah Data order
     @Override
     @Transactional
-    public ResponseOrder create(List<RequestOrder> request){
+    public String create( List<RequestOrder> request ){
 
         Integer total_qty = 0 ;
 
@@ -44,24 +49,17 @@ public class ServiceOrderImpl implements ServiceOrder {
 
             ModelOrderDetail entityDetail = toEntityDetail( id_order, data );
 
-            if ( data.getQty() < 1 ) {
+            repositoryDetail.save( entityDetail );
 
-                System.out.println("Qty Tidak Boleh Kurang Dari 1");
+            repositoryBarang.decreaseByOrder(
+                    data.getQty(),
+                    data.getId_Barang()
+            );
 
-                return null;
-            }else {
+            id_customer = data.getId();
 
-                repositoryDetail.save( entityDetail );
+            total_qty += data.getQty();
 
-                repositoryBarang.decreaseByOrder(
-                        data.getQty(),
-                        data.getId_Barang()
-                );
-
-                id_customer = data.getId();
-
-                total_qty += data.getQty();
-            }
 
         }
 
@@ -73,9 +71,10 @@ public class ServiceOrderImpl implements ServiceOrder {
         );
 
         repositoryOrder.save( entityOrder );
-//        return toResponseOrderSimple(saveEntity);
-        return null;
+
+        return "Order Berhasil";
     }
+
     private ModelOrderDetail toEntityDetail (
             String id_order,
             RequestOrder respon
@@ -87,6 +86,7 @@ public class ServiceOrderImpl implements ServiceOrder {
                 .Qty_Detail( respon.getQty_Detail() )
                 .build();
     }
+
     private  ModelOrder toEntityOrder (
             String id_order,
             Integer qty_total,
@@ -102,12 +102,6 @@ public class ServiceOrderImpl implements ServiceOrder {
                 .build();
     }
 
-//    private ResponseOrder toResponseOrderSimple(ModelOrder entity){
-//        return new ResponseOrder(
-//                entity.getId_Barang_Masuk(),
-//                entity.getTanggal_Masuk());
-//    }
-
     private String getTanggal() {
 
         DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
@@ -116,4 +110,25 @@ public class ServiceOrderImpl implements ServiceOrder {
 
         return dateFormat.format(date);
     }
+
+    //menampilkan order by tgl
+    public List<ResponseOrder> getOrderByTgl( RequestOrderTgl request ){
+
+        return repositoryDetail.getOrderByTgl( request.getTgl() )
+                .stream()
+                .map(this::toResponseOrderSimpel)
+                .collect( Collectors.toList() );
+    }
+
+    private ResponseOrder toResponseOrderSimpel( ModelOrderDetail entity ){
+
+        return new ResponseOrder(
+                entity.getId_Order(),
+                entity.getTgl_Order(),
+                entity.getNama_Barang(),
+                entity.getQty_Detail(),
+                entity.getAlamat_Penempatan()
+        );
+    }
+
 }

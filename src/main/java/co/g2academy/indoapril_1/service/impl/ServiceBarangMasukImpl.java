@@ -25,34 +25,44 @@ public class ServiceBarangMasukImpl implements ServiceBarangMasuk {
     //Menampilkan Data Barang Masuk All
     @Override
     public List<ResponseBarangMasuk> getBarangMasukList() {
-        return repository.findAll().stream().map(this::toResponseBarangMasukSimple).collect(Collectors.toList());
+
+        return repository.findAll()
+                .stream()
+                .map(this::toResponseBarangMasukSimple)
+                .collect(Collectors.toList());
     }
-    private ResponseBarangMasuk toResponseBarangMasukSimple(ModelBarangMasuk entity){
-        return new ResponseBarangMasuk(entity.getId_Barang_Masuk(),
+
+    private ResponseBarangMasuk toResponseBarangMasukSimple( ModelBarangMasuk entity ){
+
+        return new ResponseBarangMasuk(
+                entity.getId_Barang_Masuk(),
                 entity.getNomor_Surat_Jalan(),
                 entity.getId_Barang(),
                 entity.getQtt_Barang_Masuk(),
                 entity.getTanggal_Pemesanan(),
-                entity.getTanggal_Masuk());
+                entity.getTanggal_Masuk()
+        );
     }
 
     //Menambah Data Barang Masuk
     @Override
     @Transactional
-    public ResponseBarangMasuk create(RequestBarangMasuk request){
+    public ResponseBarangMasuk create( RequestBarangMasuk request ){
 
-        ModelBarangMasuk entity = toEntity(request);
+        ModelBarangMasuk entity = toEntity( request );
 
         repositoryBarang.addByBarangMasuk(
                 request.getQtt_Barang_Masuk(),
                 request.getId_Barang()
         );
 
-        ModelBarangMasuk saveEntity = repository.save(entity);
+        ModelBarangMasuk saveEntity = repository.save( entity );
 
-        return toResponseBarangMasukSimple(saveEntity);
+        return toResponseBarangMasukSimple( saveEntity );
     }
-    private  ModelBarangMasuk toEntity(RequestBarangMasuk request){
+
+    private  ModelBarangMasuk toEntity( RequestBarangMasuk request ){
+
         return ModelBarangMasuk.builder()
                 .Nomor_Surat_Jalan(request.getNomor_Surat_Jalan())
                 .Id_Barang(request.getId_Barang())
@@ -61,5 +71,19 @@ public class ServiceBarangMasukImpl implements ServiceBarangMasuk {
                 .Tanggal_Masuk(request.getTanggal_Masuk())
                 .build();
     }
-}
 
+    public boolean findIdBarang( Integer idBarang ){
+
+        if( repositoryBarang.findBarangById( idBarang ) != null ){
+
+            System.out.println("barang ada");
+            return true;
+
+        }else {
+
+            System.out.println("barang tidak ada");
+            return false;
+
+        }
+    }
+}
