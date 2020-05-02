@@ -17,11 +17,16 @@ import java.io.Serializable;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class ModelOrder implements Serializable {
+
     @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
     private String Id_Order;
     private Integer Qty_Total;
     private String Tgl_Order;
     private Integer Id_User;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "Id_User",referencedColumnName = "id_user")
+//    private UserModel user;
 
 }

@@ -16,6 +16,7 @@ public class UserResponse {
     private String alamat_penempatan;
     private String telephon_user;
     private String status;
+    private String token;
 
     public UserResponse(
             int id_User,
@@ -24,7 +25,8 @@ public class UserResponse {
             String password,
             String alamat_penempatan,
             String telephon_user,
-            String status
+            String status,
+            String token
     ) {
         this.id_User = id_User;
         this.nama_User = nama_User;
@@ -33,6 +35,7 @@ public class UserResponse {
         this.alamat_penempatan = alamat_penempatan;
         this.telephon_user = telephon_user;
         this.status = status;
+        this.token = token;
     }
 
 }

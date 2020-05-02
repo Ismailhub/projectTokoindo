@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +43,11 @@ public class UserServiceImpl implements UserService {
 
         if( verivication.checkPassword(request.getPassword(),entity.getPassword()) ){
 
+            UUID uuid = UUID.randomUUID();
+
+            //masukan token ke UserModel
+            entity.setToken(String.valueOf(uuid));
+
             UserModel savedEntyty = repository.save(entity);
 
             return new BaseResponse(HttpStatus.OK, "Succes", toLoginResponseSimple(savedEntyty), "Succes");
@@ -63,7 +69,8 @@ public class UserServiceImpl implements UserService {
                 entity.getPassword(),
                 entity.getAlamat_Penempatan(),
                 entity.getTelephon_User(),
-                entity.getStatus());
+                entity.getStatus(),
+                entity.getToken());
     }
 
 }
