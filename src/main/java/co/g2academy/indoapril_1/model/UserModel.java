@@ -10,34 +10,37 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
-@Entity
 @EntityListeners(AuditingEntityListener.class)
+@Entity
 public class UserModel implements Serializable {
+
     @Id //ganti2 kalo ada erorr kan ada 2 tuh Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id_user")
-    private int id_User;
+    private Integer id_User;
     private String nama_User;
     private String username;
     private String password;
+    @Column(name = "alamat_penempatan")
     private String alamat_Penempatan;
     private String telephon_User;
     private String status;
     private String token;
 
-//    @OneToMany(
-//            mappedBy = "user",
-//            cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY,
-//            orphanRemoval = true
-//    )
-//    private List<ModelOrder> order = new ArrayList<ModelOrder>();
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    private Set<ModelOrder> order;
 
     // setter and getter
 }

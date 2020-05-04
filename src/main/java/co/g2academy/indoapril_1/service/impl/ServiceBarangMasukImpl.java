@@ -37,10 +37,12 @@ public class ServiceBarangMasukImpl implements ServiceBarangMasuk {
         return new ResponseBarangMasuk(
                 entity.getId_Barang_Masuk(),
                 entity.getNomor_Surat_Jalan(),
-                entity.getId_Barang(),
+//                entity.getId_Barang(),
+                entity.getMasterBarang().getId_Barang(),
                 entity.getQtt_Barang_Masuk(),
                 entity.getTanggal_Pemesanan(),
-                entity.getTanggal_Masuk()
+                entity.getTanggal_Masuk(),
+                entity.getMasterBarang().getNama_Barang()
         );
     }
 
@@ -65,7 +67,7 @@ public class ServiceBarangMasukImpl implements ServiceBarangMasuk {
 
         return ModelBarangMasuk.builder()
                 .Nomor_Surat_Jalan(request.getNomor_Surat_Jalan())
-                .Id_Barang(request.getId_Barang())
+//                .Id_Barang(request.getId_Barang())
                 .Qtt_Barang_Masuk(request.getQtt_Barang_Masuk())
                 .Tanggal_Pemesanan(request.getTanggal_Pemesanan())
                 .Tanggal_Masuk(request.getTanggal_Masuk())

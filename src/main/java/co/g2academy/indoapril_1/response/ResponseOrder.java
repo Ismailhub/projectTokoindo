@@ -9,12 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
-@Builder
-@NoArgsConstructor
 public class ResponseOrder {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String Id_Order;
     private String Tgl_Order;
     private String Nama_Barang;

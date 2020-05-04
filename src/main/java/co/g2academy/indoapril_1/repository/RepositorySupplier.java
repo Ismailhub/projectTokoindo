@@ -1,11 +1,7 @@
 package co.g2academy.indoapril_1.repository;
 
-import co.g2academy.indoapril_1.model.ModelSupplairAndBarang;
 import co.g2academy.indoapril_1.model.SupplierModel;
-import co.g2academy.indoapril_1.response.ResponseSupplierAndBarang;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

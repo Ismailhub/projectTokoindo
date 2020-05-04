@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -19,14 +21,15 @@ import java.io.Serializable;
 public class ModelOrder implements Serializable {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_order")
     private String Id_Order;
     private Integer Qty_Total;
     private String Tgl_Order;
     private Integer Id_User;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "Id_User",referencedColumnName = "id_user")
-//    private UserModel user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user", insertable = false, updatable = false)
+    private UserModel user;
 
 }

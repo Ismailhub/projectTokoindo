@@ -19,6 +19,7 @@ import javax.persistence.*;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class ModelInventoryReport implements Serializable {
+
     @Id
     private int Id_Barang_Masuk;
     private String Nomor_Surat_Jalan;
@@ -31,4 +32,5 @@ public class ModelInventoryReport implements Serializable {
     private Integer Qty_Stock;
     private Integer Qty_Min_Stock;
     private Date Tgl_Order;
+
 }

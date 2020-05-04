@@ -15,17 +15,27 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Table(name = "tb_barang")
 @Entity
-@EntityListeners(AuditingEntityListener.class)
+//@EntityListeners(AuditingEntityListener.class)
 public class ModelBarang implements Serializable {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer Id_Barang;
     private String Nama_Barang;
     private Integer Qty_Min_Stock;
     private Integer Qty_Stock;
     private String Satuan;
     private Integer Harga_Barang;
-    private Integer Id_Supplier;
+//    private Integer Id_Supplier;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "Id_Supplier")
+    private SupplierModel supplier;
 
+//    @OneToMany(
+//            mappedBy = "barang",
+//            cascade = CascadeType.ALL,
+//            fetch = FetchType.LAZY,
+//            orphanRemoval = true
+//    )
+//    @JoinColumn(name = "")
 }

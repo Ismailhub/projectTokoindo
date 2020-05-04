@@ -1,9 +1,9 @@
 package co.g2academy.indoapril_1.service.impl;
 
-import co.g2academy.indoapril_1.model.ModelSupplairAndBarang;
+import co.g2academy.indoapril_1.model.ModelBarang;
 import co.g2academy.indoapril_1.model.SupplierModel;
+import co.g2academy.indoapril_1.repository.RepositoryBarang;
 import co.g2academy.indoapril_1.repository.RepositorySupplier;
-import co.g2academy.indoapril_1.repository.RepositorySupplierAndBarang;
 import co.g2academy.indoapril_1.request.RequestSupplier;
 import co.g2academy.indoapril_1.response.ResponseSupplier;
 import co.g2academy.indoapril_1.response.ResponseSupplierAndBarang;
@@ -23,7 +23,7 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 
     private RepositorySupplier repository;
 
-    private RepositorySupplierAndBarang repositorySNB;
+    private RepositoryBarang repBarang;
 
     // menampilkan semua supplier
     @Override
@@ -49,20 +49,20 @@ public class ServiceSupplierImpl implements ServiceSupplier {
     @Override
     public List<ResponseSupplierAndBarang> getSupplierAndBarangList(){
 
-        return  repositorySNB.getSupplierAndBarangList()
+        return  repBarang.findAll()
                 .stream()
                 .map( this::toResponseSupplierAndBarangSimpel )
                 .collect( Collectors.toList() );
 
     }
 
-    private ResponseSupplierAndBarang toResponseSupplierAndBarangSimpel( ModelSupplairAndBarang entity ){
+    private ResponseSupplierAndBarang toResponseSupplierAndBarangSimpel( ModelBarang entity ){
 
         return new ResponseSupplierAndBarang(
-                entity.getId_Supplier(),
-                entity.getNama_Supplier(),
-                entity.getAlamat_Supplier(),
-                entity.getTelepon_Supplier(),
+                entity.getSupplier().getId_Supplier(),
+                entity.getSupplier().getNama_Supplier(),
+                entity.getSupplier().getAlamat_Supplier(),
+                entity.getSupplier().getTelepon_Supplier(),
                 entity.getId_Barang(),
                 entity.getNama_Barang(),
                 entity.getQty_Min_Stock(),

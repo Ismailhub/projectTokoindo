@@ -21,11 +21,19 @@ public class ModelOrderDetail implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int No;
-    private String Id_Order;
-    private Integer Id_Barang;
     private Integer Qty_Detail;
-    private String Tgl_Order;
-    private String Nama_Barang;
-    private String Alamat_Penempatan;
+    private Integer Id_Barang;
+//    private String Nama_Barang;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "Id_Barang", insertable=false, updatable=false)
+    private  ModelBarang barang;
+
+    private String Id_Order;
+//    private String Tgl_Order;  insertable=false, updatable=false
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "Id_Order", insertable=false, updatable=false )
+    private ModelOrder order;
+
+//    private String Alamat_Penempatan;
 
 }

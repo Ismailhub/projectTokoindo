@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -16,14 +17,14 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "tb_supplier")
 @Entity
-@EntityListeners(AuditingEntityListener.class)
+//@EntityListeners(AuditingEntityListener.class)
 public class SupplierModel implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int Id_Supplier;
     private String Nama_Supplier;
     private String Alamat_Supplier;
     private String Telepon_Supplier;
-
 
 }

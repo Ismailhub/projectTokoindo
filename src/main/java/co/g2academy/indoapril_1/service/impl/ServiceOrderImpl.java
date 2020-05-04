@@ -60,7 +60,6 @@ public class ServiceOrderImpl implements ServiceOrder {
 
             total_qty += data.getQty();
 
-
         }
 
         ModelOrder entityOrder = toEntityOrder(
@@ -114,7 +113,7 @@ public class ServiceOrderImpl implements ServiceOrder {
     //menampilkan order by tgl
     public List<ResponseOrder> getOrderByTgl( RequestOrderTgl request ){
 
-        return repositoryDetail.getOrderByTgl( request.getTgl() )
+        return repositoryDetail.findAll()
                 .stream()
                 .map(this::toResponseOrderSimpel)
                 .collect( Collectors.toList() );
@@ -123,11 +122,11 @@ public class ServiceOrderImpl implements ServiceOrder {
     private ResponseOrder toResponseOrderSimpel( ModelOrderDetail entity ){
 
         return new ResponseOrder(
-                entity.getId_Order(),
-                entity.getTgl_Order(),
-                entity.getNama_Barang(),
+                entity.getOrder().getId_Order(),
+                entity.getOrder().getTgl_Order(),
+                entity.getBarang().getNama_Barang(),
                 entity.getQty_Detail(),
-                entity.getAlamat_Penempatan()
+                entity.getOrder().getUser().getAlamat_Penempatan()
         );
     }
 
