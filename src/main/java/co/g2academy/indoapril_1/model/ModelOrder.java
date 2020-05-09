@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -28,8 +26,12 @@ public class ModelOrder implements Serializable {
     private String Tgl_Order;
     private Integer Id_User;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(
+            name = "id_user",
+            insertable = false,
+            updatable = false
+    )
     private UserModel user;
 
 }

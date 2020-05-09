@@ -1,7 +1,6 @@
 package co.g2academy.indoapril_1.service.impl;
 
 import co.g2academy.indoapril_1.model.UserModel;
-import co.g2academy.indoapril_1.repository.RepositoryOrder;
 import co.g2academy.indoapril_1.repository.UserRepository;
 import co.g2academy.indoapril_1.request.loginrequest.LoginRequest;
 import co.g2academy.indoapril_1.response.loginresponse.BaseResponse;
@@ -14,12 +13,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +24,6 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository repository;
     private ServiceCheckPassword verivication;
-    private RepositoryOrder rep;
 
     //Login by user name and password
     @Override
@@ -37,14 +31,6 @@ public class UserServiceImpl implements UserService {
     public BaseResponse loginByUsername(LoginRequest request) throws NoSuchAlgorithmException {
 
         UserModel entity = repository.getOneByUsername( request.getUsername() );
-
-//        System.out.println("test");
-//        System.out.println(rep.findByUserModelUsername( request.getUsername() ));
-
-//        List<UserModel> userList = new ArrayList<>();
-//        repository.findByUsername( request.getUsername() );
-//        System.out.println("test");
-//        System.out.println(userList);
 
         if ( entity == null ) {
 
@@ -71,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private UserResponse toLoginResponseSimple(UserModel entity ) {
+    private UserResponse toLoginResponseSimple( UserModel entity ) {
 
         return new UserResponse(
                 entity.getId_User(),

@@ -33,5 +33,6 @@ public class BaseResponse <T> {
     public void setLogin(Boolean login) {
         this.isLogin = login;
     }
+
 }
 

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestSupplier {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int Id_Supplier;
@@ -23,4 +24,5 @@ public class RequestSupplier {
     private String Provinsi_Supplier;
     private String Telepon_Supplier;
     private String Status;
+
 }

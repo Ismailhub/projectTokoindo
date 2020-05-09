@@ -1,4 +1,3 @@
-
 package co.g2academy.indoapril_1.request;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +14,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestOrderTgl {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int No;

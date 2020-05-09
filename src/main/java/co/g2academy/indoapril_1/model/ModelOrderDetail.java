@@ -22,18 +22,34 @@ public class ModelOrderDetail implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int No;
     private Integer Qty_Detail;
-    private Integer Id_Barang;
+    private Integer idBarang;
+    private String Id_Order;
+
 //    private String Nama_Barang;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "Id_Barang", insertable=false, updatable=false)
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    @JoinColumn(
+            name = "idBarang",
+            insertable=false,
+            updatable=false
+    )
     private  ModelBarang barang;
 
-    private String Id_Order;
-//    private String Tgl_Order;  insertable=false, updatable=false
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "Id_Order", insertable=false, updatable=false )
+//    private String Tgl_Order;
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(
+            name = "Id_Order",
+            insertable=false,
+            updatable=false
+    )
     private ModelOrder order;
 
-//    private String Alamat_Penempatan;
+
 
 }

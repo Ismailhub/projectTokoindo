@@ -2,8 +2,6 @@ package co.g2academy.indoapril_1.response;
 
 import lombok.*;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
@@ -13,7 +11,6 @@ import javax.persistence.Id;
 public class ResponseSupplierAndBarang {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int Id_Supplier;
     private String Nama_Supplier;
     private String Alamat_Supplier;

@@ -1,4 +1,3 @@
-
 package co.g2academy.indoapril_1.request;
 
 import lombok.AllArgsConstructor;
@@ -9,14 +8,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Date;
-import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestOrder {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int No;
@@ -27,6 +25,7 @@ public class RequestOrder {
     public int getId(){
         return this.Id_User;
     }
+
     public int getQty(){
         return this.Qty_Detail;
     }

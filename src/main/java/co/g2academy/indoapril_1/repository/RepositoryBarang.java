@@ -1,4 +1,3 @@
-
 package co.g2academy.indoapril_1.repository;
 
 import co.g2academy.indoapril_1.model.ModelBarang;
@@ -9,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 
 public interface RepositoryBarang extends JpaRepository<ModelBarang, Integer> {
 

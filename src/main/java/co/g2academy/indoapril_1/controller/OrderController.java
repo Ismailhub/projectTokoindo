@@ -2,7 +2,6 @@ package co.g2academy.indoapril_1.controller;
 
 import co.g2academy.indoapril_1.request.RequestOrder;
 import co.g2academy.indoapril_1.request.RequestOrderTgl;
-import co.g2academy.indoapril_1.response.ResponseOrder;
 import co.g2academy.indoapril_1.response.loginresponse.BaseResponse;
 import co.g2academy.indoapril_1.service.ServiceBarangMasuk;
 import co.g2academy.indoapril_1.service.ServiceOrder;
@@ -26,7 +25,10 @@ public class OrderController {
     ServiceBarangMasuk serviceBarangMasuk;
 
     //Menambah Data Barang Masuk
-    @PostMapping(value = "/InputOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+            value = "/InputOrder",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<BaseResponse> postBarangMasuk( @RequestBody List<RequestOrder> request ){
 
         boolean validBarnag = true;
@@ -43,19 +45,13 @@ public class OrderController {
 
         if ( validBarnag && validQty ){
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.OK,
-                    "Suksess",
-                    service.create(request),
-                    "Order Berhasil");
+            BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "Suksess", service.create(request), "Order Berhasil");
 
             return new ResponseEntity<>( baseResponse, HttpStatus.CREATED );
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.OK,
-                    "Failed",
-                    request,
-                    "Qty Minimal 1 & ID Barang Harus Sudah Terdaftar");
+            BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "Failed", request, "Qty Minimal 1 & ID Barang Harus Sudah Terdaftar");
 
             return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
@@ -64,13 +60,13 @@ public class OrderController {
     }
 
     //lihat order by tgl
-    @PostMapping( value = "/getOrderByTgl", consumes = MediaType.APPLICATION_JSON_VALUE )
+    @PostMapping(
+            value = "/getOrderByTgl",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<BaseResponse> getOrder( @RequestBody RequestOrderTgl request ){
 
-        BaseResponse baseResponse = new BaseResponse(HttpStatus.OK,
-                "OK",
-                service.getOrderByTgl(request),
-                "Order pada tanggal "+request.getTgl());
+        BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getOrderByTgl(request), "Order pada tanggal "+request.getTgl());
 
         return new ResponseEntity<>( baseResponse,HttpStatus.OK );
 

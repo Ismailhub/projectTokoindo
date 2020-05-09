@@ -12,8 +12,8 @@ import javax.persistence.Id;
 @Builder
 @NoArgsConstructor
 public class ResponseSupplier {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int Id_Supplier;
     private String Nama_Supplier;
     private String Alamat_Supplier;

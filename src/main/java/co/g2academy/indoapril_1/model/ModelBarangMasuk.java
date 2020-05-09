@@ -1,6 +1,5 @@
 package co.g2academy.indoapril_1.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +9,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder
@@ -26,12 +23,20 @@ public class ModelBarangMasuk implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int Id_Barang_Masuk;
     private String Nomor_Surat_Jalan;
-//    private Integer Id_Barang;
+    private Integer idBarang;
     private Integer Qtt_Barang_Masuk;
     private Date Tanggal_Pemesanan ;
     private Date Tanggal_Masuk;
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "Id_Barang")
+
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(
+            name = "idBarang",
+            insertable = false,
+            updatable = false
+    )
     private ModelBarang masterBarang;
 
 }

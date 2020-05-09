@@ -11,7 +11,6 @@ import co.g2academy.indoapril_1.service.ServiceSupplier;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +36,7 @@ public class ServiceSupplierImpl implements ServiceSupplier {
     }
 
     private ResponseSupplier toResponseSupplierSimpel( SupplierModel entity ){
+
         return new ResponseSupplier(
                 entity.getId_Supplier(),
                 entity.getNama_Supplier(),
@@ -63,7 +63,7 @@ public class ServiceSupplierImpl implements ServiceSupplier {
                 entity.getSupplier().getNama_Supplier(),
                 entity.getSupplier().getAlamat_Supplier(),
                 entity.getSupplier().getTelepon_Supplier(),
-                entity.getId_Barang(),
+                entity.getIdBarang(),
                 entity.getNama_Barang(),
                 entity.getQty_Min_Stock(),
                 entity.getQty_Stock(),
@@ -72,7 +72,6 @@ public class ServiceSupplierImpl implements ServiceSupplier {
         );
 
     }
-
 
     // menambah data supplier
     @Override

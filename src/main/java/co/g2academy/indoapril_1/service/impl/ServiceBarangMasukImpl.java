@@ -1,6 +1,5 @@
 package co.g2academy.indoapril_1.service.impl;
 
-
 import co.g2academy.indoapril_1.model.ModelBarangMasuk;
 import co.g2academy.indoapril_1.repository.RepositoryBarang;
 import co.g2academy.indoapril_1.repository.RepositoryBarangMasuk;
@@ -10,7 +9,6 @@ import co.g2academy.indoapril_1.service.ServiceBarangMasuk;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +17,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Repository("SeviceBarangMasuk")
 public class ServiceBarangMasukImpl implements ServiceBarangMasuk {
+
     private RepositoryBarang repositoryBarang;
+
     private RepositoryBarangMasuk repository;
 
     //Menampilkan Data Barang Masuk All
@@ -37,13 +37,13 @@ public class ServiceBarangMasukImpl implements ServiceBarangMasuk {
         return new ResponseBarangMasuk(
                 entity.getId_Barang_Masuk(),
                 entity.getNomor_Surat_Jalan(),
-//                entity.getId_Barang(),
-                entity.getMasterBarang().getId_Barang(),
+                entity.getMasterBarang().getIdBarang(),
                 entity.getQtt_Barang_Masuk(),
                 entity.getTanggal_Pemesanan(),
                 entity.getTanggal_Masuk(),
                 entity.getMasterBarang().getNama_Barang()
         );
+
     }
 
     //Menambah Data Barang Masuk
@@ -66,11 +66,11 @@ public class ServiceBarangMasukImpl implements ServiceBarangMasuk {
     private  ModelBarangMasuk toEntity( RequestBarangMasuk request ){
 
         return ModelBarangMasuk.builder()
-                .Nomor_Surat_Jalan(request.getNomor_Surat_Jalan())
-//                .Id_Barang(request.getId_Barang())
-                .Qtt_Barang_Masuk(request.getQtt_Barang_Masuk())
-                .Tanggal_Pemesanan(request.getTanggal_Pemesanan())
-                .Tanggal_Masuk(request.getTanggal_Masuk())
+                .Nomor_Surat_Jalan( request.getNomor_Surat_Jalan() )
+                .idBarang( request.getId_Barang() )
+                .Qtt_Barang_Masuk( request.getQtt_Barang_Masuk() )
+                .Tanggal_Pemesanan( request.getTanggal_Pemesanan() )
+                .Tanggal_Masuk( request.getTanggal_Masuk() )
                 .build();
     }
 
@@ -79,11 +79,13 @@ public class ServiceBarangMasukImpl implements ServiceBarangMasuk {
         if( repositoryBarang.findBarangById( idBarang ) != null ){
 
             System.out.println("barang ada");
+
             return true;
 
         }else {
 
             System.out.println("barang tidak ada");
+
             return false;
 
         }

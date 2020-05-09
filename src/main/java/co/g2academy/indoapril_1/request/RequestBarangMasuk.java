@@ -15,6 +15,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestBarangMasuk {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int Id_Barang_Masuk;
@@ -23,4 +24,5 @@ public class RequestBarangMasuk {
     private Integer Qtt_Barang_Masuk;
     private Date Tanggal_Pemesanan;
     private Date Tanggal_Masuk;
+
 }

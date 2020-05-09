@@ -8,9 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -28,19 +26,12 @@ public class UserModel implements Serializable {
     private String nama_User;
     private String username;
     private String password;
-    @Column(name = "alamat_penempatan")
     private String alamat_Penempatan;
     private String telephon_User;
     private String status;
     private String token;
 
-    @OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            orphanRemoval = true
-    )
-    private Set<ModelOrder> order;
+    @OneToMany(mappedBy = "user")
+    private List<ModelOrder> order;
 
-    // setter and getter
 }

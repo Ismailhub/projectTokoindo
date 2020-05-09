@@ -1,8 +1,5 @@
-
 package co.g2academy.indoapril_1.repository;
 
-import co.g2academy.indoapril_1.model.ModelBarang;
-import co.g2academy.indoapril_1.model.ModelOrder;
 import co.g2academy.indoapril_1.model.ModelOrderDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +26,5 @@ public interface RepositoryOrderDetail extends JpaRepository<ModelOrderDetail, I
 //    @Query(value = "SELECT * FROM tb_order_detail INNER JOIN tb_order b USING(id_order) WHERE (b.tgl_order BETWEEN :tglMulai AND :tglAkhir) ORDER BY(id_barang)",nativeQuery = true)
 //    List<ModelOrderDetail> getReportOrderDetail(@Param("tglMulai") String tglMulai, @Param("tglAkhir") String tglAkhir);
 
+    List<ModelOrderDetail> findAllByOrderByIdBarang();
 }

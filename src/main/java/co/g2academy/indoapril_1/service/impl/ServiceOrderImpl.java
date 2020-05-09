@@ -12,7 +12,6 @@ import co.g2academy.indoapril_1.service.ServiceOrder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -81,7 +80,7 @@ public class ServiceOrderImpl implements ServiceOrder {
         return ModelOrderDetail
                 .builder()
                 .Id_Order( id_order )
-                .Id_Barang( respon.getId_Barang() )
+                .idBarang( respon.getId_Barang() )
                 .Qty_Detail( respon.getQty_Detail() )
                 .build();
     }

@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestInventoryReport {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int No;
