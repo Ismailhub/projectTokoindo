@@ -31,7 +31,7 @@ public class UserModel implements Serializable {
     private String status;
     private String token;
 
-    @OneToMany(mappedBy = "user")
-    private List<ModelOrder> order;
+//    @OneToMany(mappedBy = "user")
+//    private List<ModelPenjualan> order;
 
 }

@@ -13,21 +13,14 @@ import javax.persistence.Id;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestOrder {
+public class RequestPenjualanTgl {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int No;
-    private Integer Id_User;
-    private Integer Id_Barang;
-    private Integer Qty_Detail;
+    private String Tgl;
 
-    public int getId(){
-        return this.Id_User;
+    public String getTgl() {
+        return this.Tgl;
     }
-
-    public int getQty(){
-        return this.Qty_Detail;
-    }
-
 }

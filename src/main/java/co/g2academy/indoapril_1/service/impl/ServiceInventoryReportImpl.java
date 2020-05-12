@@ -18,135 +18,137 @@ import java.util.stream.Collectors;
 public class ServiceInventoryReportImpl implements ServiceInventoryReport {
 
     @Autowired
-    RepositoryBarang repositoryBarang;
+    RepositoryProduct repositoryProduct;
 
     @Autowired
-    RepositoryBarangMasuk repostiryBarangMasuk;
+    RepositoryProductMasuk repostiryBarangMasuk;
 
     @Autowired
-    RepositoryOrderDetail repositoryOrderDetail;
+    RepositoryPenjualanDetail repositoryPenjualanDetail;
 
     public List<ResponseInventoryReport>getInventoryReportBy( RequestInventoryReport request ){
 
-        List<ResponseInventoryReport> resultBarang = repositoryBarang.findAll()
-                .stream()
-                .map(this::toResponseInventoryReportSimpel)
-                .collect(Collectors.toList());
-
-//        List<ModelBarangMasuk> tempBarangMasuk = repostiryBarangMasuk.findAll(Sort.by(Sort.Direction.ASC,"IdBarang"));
-
-        List<ModelBarangMasuk> tempBarangMasuk = repostiryBarangMasuk.findAllByOrderByIdBarang();
-
-        List<ModelOrderDetail> tempOrderDetail = repositoryOrderDetail.findAllByOrderByIdBarang();
-
-        int idBarangMasuk = tempBarangMasuk.get(0).getIdBarang();
-
-        int idBarangKeluar = tempOrderDetail.get(0).getIdBarang();
-
-        Integer totalBarangMasuk = tempBarangMasuk.get(0).getQtt_Barang_Masuk();
-
-        Integer totalBarangKeluar = tempOrderDetail.get(0).getQty_Detail();
-
-        HashMap<Integer,Integer> listTotalMasuk = new HashMap<>();
-
-        HashMap<Integer,Integer> listTotalKeluar = new HashMap<>();
-
-        boolean lastIdBarangMasuk = true;
-
-        boolean lastIdBarangKluar = true;
-
-        for( int i = 0; i < tempBarangMasuk.size() || i < tempOrderDetail.size() ; i++ ){
-
-            // untuk list total masuk
-            try {
-
-                if ( idBarangMasuk == tempBarangMasuk.get( i+1 ).getIdBarang() ){
-
-                    totalBarangMasuk += tempBarangMasuk.get( i+1 ).getQtt_Barang_Masuk();
-
-                }else {
-
-                    listTotalMasuk.put( idBarangMasuk, totalBarangMasuk );
-
-                    idBarangMasuk++;
-
-                    totalBarangMasuk = tempBarangMasuk.get( i+1 ).getQtt_Barang_Masuk();
-
-                }
-
-            }catch (Exception e){
-
-                if ( lastIdBarangMasuk ){
-
-                    listTotalMasuk.put( idBarangMasuk, totalBarangMasuk );
-
-                    lastIdBarangMasuk = false;
-                }
-
-                idBarangMasuk++;
-            }
-
-            // untuk list total keluar
-            try {
-
-                if ( idBarangKeluar == tempOrderDetail.get( i+1 ).getIdBarang() ){
-
-                    totalBarangKeluar += tempOrderDetail.get( i+1 ).getQty_Detail();
-
-                }else {
-
-                    listTotalKeluar.put( idBarangKeluar, totalBarangKeluar );
-
-                    idBarangKeluar++;
-
-                    totalBarangKeluar = tempOrderDetail.get(i+1).getQty_Detail();
-
-                }
-
-            }catch ( Exception e ){
-
-                if ( lastIdBarangKluar ){
-
-                    listTotalKeluar.put(idBarangKeluar,totalBarangKeluar);
-
-                    lastIdBarangKluar = false;
-
-                }
-
-                idBarangKeluar++;
-            }
-
-        }
-
-        for (int k = 0; k < resultBarang.size(); k++){
-
-            int idBarang = resultBarang.get(k).getId_Barang();
-
-            if( listTotalKeluar.get( idBarang ) != null ){
-
-                resultBarang.get(k).setQty_Detail( listTotalKeluar.get( idBarang ) );
-            }
-
-            if( listTotalMasuk.get( idBarang ) != null){
-
-                resultBarang.get(k).setQtt_Barang_Masuk( listTotalMasuk.get(idBarang) );
-            }
-
-        }
-
-        return resultBarang;
+//        List<ResponseInventoryReport> resultBarang = repositoryProduct.findAll()
+//                .stream()
+//                .map(this::toResponseInventoryReportSimpel)
+//                .collect(Collectors.toList());
+//
+////        List<ModelProductMasuk> tempBarangMasuk = repostiryBarangMasuk.findAll(Sort.by(Sort.Direction.ASC,"IdBarang"));
+//
+//        List<ModelProductMasuk> tempBarangMasuk = repostiryBarangMasuk.findAllByOrderByIdBarang();
+//
+//        List<ModelPenjualanDetail> tempOrderDetail = repositoryPenjualanDetail.findAllByOrderByIdBarang();
+//
+//        int idBarangMasuk = tempBarangMasuk.get(0).getIdBarang();
+//
+//        int idBarangKeluar = tempOrderDetail.get(0).getIdBarang();
+//
+//        Integer totalBarangMasuk = tempBarangMasuk.get(0).getQtt_Barang_Masuk();
+//
+//        Integer totalBarangKeluar = tempOrderDetail.get(0).getQty_Detail();
+//
+//        HashMap<Integer,Integer> listTotalMasuk = new HashMap<>();
+//
+//        HashMap<Integer,Integer> listTotalKeluar = new HashMap<>();
+//
+//        boolean lastIdBarangMasuk = true;
+//
+//        boolean lastIdBarangKluar = true;
+//
+//        for( int i = 0; i < tempBarangMasuk.size() || i < tempOrderDetail.size() ; i++ ){
+//
+//            // untuk list total masuk
+//            try {
+//
+//                if ( idBarangMasuk == tempBarangMasuk.get( i+1 ).getIdBarang() ){
+//
+//                    totalBarangMasuk += tempBarangMasuk.get( i+1 ).getQtt_Barang_Masuk();
+//
+//                }else {
+//
+//                    listTotalMasuk.put( idBarangMasuk, totalBarangMasuk );
+//
+//                    idBarangMasuk++;
+//
+//                    totalBarangMasuk = tempBarangMasuk.get( i+1 ).getQtt_Barang_Masuk();
+//
+//                }
+//
+//            }catch (Exception e){
+//
+//                if ( lastIdBarangMasuk ){
+//
+//                    listTotalMasuk.put( idBarangMasuk, totalBarangMasuk );
+//
+//                    lastIdBarangMasuk = false;
+//                }
+//
+//                idBarangMasuk++;
+//            }
+//
+//            // untuk list total keluar
+//            try {
+//
+//                if ( idBarangKeluar == tempOrderDetail.get( i+1 ).getIdBarang() ){
+//
+//                    totalBarangKeluar += tempOrderDetail.get( i+1 ).getQty_Detail();
+//
+//                }else {
+//
+//                    listTotalKeluar.put( idBarangKeluar, totalBarangKeluar );
+//
+//                    idBarangKeluar++;
+//
+//                    totalBarangKeluar = tempOrderDetail.get(i+1).getQty_Detail();
+//
+//                }
+//
+//            }catch ( Exception e ){
+//
+//                if ( lastIdBarangKluar ){
+//
+//                    listTotalKeluar.put(idBarangKeluar,totalBarangKeluar);
+//
+//                    lastIdBarangKluar = false;
+//
+//                }
+//
+//                idBarangKeluar++;
+//            }
+//
+//        }
+//
+//        for (int k = 0; k < resultBarang.size(); k++){
+//
+//            int idBarang = resultBarang.get(k).getId_Barang();
+//
+//            if( listTotalKeluar.get( idBarang ) != null ){
+//
+//                resultBarang.get(k).setQty_Detail( listTotalKeluar.get( idBarang ) );
+//            }
+//
+//            if( listTotalMasuk.get( idBarang ) != null){
+//
+//                resultBarang.get(k).setQtt_Barang_Masuk( listTotalMasuk.get(idBarang) );
+//            }
+//
+//        }
+//
+//        return resultBarang;
+        return null;
     }
 
-    private ResponseInventoryReport toResponseInventoryReportSimpel( ModelBarang entity ){
+    private ResponseInventoryReport toResponseInventoryReportSimpel( ModelProduct entity ){
 
-        return new ResponseInventoryReport(
-                entity.getIdBarang(),
-                entity.getNama_Barang(),
-                0,
-                0,
-                entity.getQty_Stock(),
-                entity.getQty_Min_Stock()
-        );
+        return null;
+//        return new ResponseInventoryReport(
+//                entity.getIdBarang(),
+//                entity.getNama_Barang(),
+//                0,
+//                0,
+//                entity.getQty_Stock(),
+//                entity.getQty_Min_Stock()
+//        );
     }
 
 }

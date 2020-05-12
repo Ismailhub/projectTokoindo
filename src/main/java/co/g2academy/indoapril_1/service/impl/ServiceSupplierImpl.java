@@ -1,8 +1,8 @@
 package co.g2academy.indoapril_1.service.impl;
 
-import co.g2academy.indoapril_1.model.ModelBarang;
-import co.g2academy.indoapril_1.model.SupplierModel;
-import co.g2academy.indoapril_1.repository.RepositoryBarang;
+import co.g2academy.indoapril_1.model.ModelProduct;
+import co.g2academy.indoapril_1.model.ModelSupplier;
+import co.g2academy.indoapril_1.repository.RepositoryProduct;
 import co.g2academy.indoapril_1.repository.RepositorySupplier;
 import co.g2academy.indoapril_1.request.RequestSupplier;
 import co.g2academy.indoapril_1.response.ResponseSupplier;
@@ -22,7 +22,7 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 
     private RepositorySupplier repository;
 
-    private RepositoryBarang repBarang;
+    private RepositoryProduct repBarang;
 
     // menampilkan semua supplier
     @Override
@@ -35,41 +35,44 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 
     }
 
-    private ResponseSupplier toResponseSupplierSimpel( SupplierModel entity ){
+    private ResponseSupplier toResponseSupplierSimpel( ModelSupplier entity ){
 
-        return new ResponseSupplier(
-                entity.getId_Supplier(),
-                entity.getNama_Supplier(),
-                entity.getAlamat_Supplier(),
-                entity.getTelepon_Supplier()
-        );
+        return null;
+//        return new ResponseSupplier(
+//                entity.getId_Supplier(),
+//                entity.getNama_Supplier(),
+//                entity.getAlamat_Supplier(),
+//                entity.getTelepon_Supplier()
+//        );
     }
 
     // menampilkan supplier dan barangnya
     @Override
     public List<ResponseSupplierAndBarang> getSupplierAndBarangList(){
 
-        return  repBarang.findAll()
-                .stream()
-                .map( this::toResponseSupplierAndBarangSimpel )
-                .collect( Collectors.toList() );
+        return null;
+//        return  repBarang.findAll()
+//                .stream()
+//                .map( this::toResponseSupplierAndBarangSimpel )
+//                .collect( Collectors.toList() );
 
     }
 
-    private ResponseSupplierAndBarang toResponseSupplierAndBarangSimpel( ModelBarang entity ){
+    private ResponseSupplierAndBarang toResponseSupplierAndBarangSimpel( ModelProduct entity ){
 
-        return new ResponseSupplierAndBarang(
-                entity.getSupplier().getId_Supplier(),
-                entity.getSupplier().getNama_Supplier(),
-                entity.getSupplier().getAlamat_Supplier(),
-                entity.getSupplier().getTelepon_Supplier(),
-                entity.getIdBarang(),
-                entity.getNama_Barang(),
-                entity.getQty_Min_Stock(),
-                entity.getQty_Stock(),
-                entity.getSatuan(),
-                entity.getHarga_Barang()
-        );
+        return null;
+//        return new ResponseSupplierAndBarang(
+//                entity.getSupplier().getId_Supplier(),
+//                entity.getSupplier().getNama_Supplier(),
+//                entity.getSupplier().getAlamat_Supplier(),
+//                entity.getSupplier().getTelepon_Supplier(),
+//                entity.getIdBarang(),
+//                entity.getNama_Barang(),
+//                entity.getQty_Min_Stock(),
+//                entity.getQty_Stock(),
+//                entity.getSatuan(),
+//                entity.getHarga_Barang()
+//        );
 
     }
 
@@ -78,24 +81,25 @@ public class ServiceSupplierImpl implements ServiceSupplier {
     @Transactional
     public ResponseSupplier create( RequestSupplier request ){
 
-        SupplierModel entity = toEntity( request );
+        ModelSupplier entity = toEntity( request );
 
-        SupplierModel saveEntity = repository.save( entity );
+        ModelSupplier saveEntity = repository.save( entity );
 
         return toResponseSupplierSimpel( saveEntity );
 
     }
 
-    private SupplierModel toEntity( RequestSupplier request ){
+    private ModelSupplier toEntity(RequestSupplier request ){
 
-        return SupplierModel
-                .builder()
-                .Id_Supplier(request.getId_Supplier())
-                .Nama_Supplier(request.getNama_Supplier())
-                .Alamat_Supplier(request.getAlamat_Supplier())
-                .Telepon_Supplier(request.getTelepon_Supplier())
-                .build();
-
+        return null;
+//        return ModelSupplier
+//                .builder()
+//                .Id_Supplier(request.getId_Supplier())
+//                .Nama_Supplier(request.getNama_Supplier())
+//                .Alamat_Supplier(request.getAlamat_Supplier())
+//                .Telepon_Supplier(request.getTelepon_Supplier())
+//                .build();
+//
     }
 
 }

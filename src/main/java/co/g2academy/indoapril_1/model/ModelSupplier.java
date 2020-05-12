@@ -14,13 +14,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Table(name = "tb_supplier")
 @Entity
-public class SupplierModel implements Serializable {
+public class ModelSupplier implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int Id_Supplier;
-    private String Nama_Supplier;
-    private String Alamat_Supplier;
-    private String Telepon_Supplier;
+    private Integer idSupplier;
+    private String namaSupplier;
+    private String alamatSupplier;
+    private String telepon;
 
 }

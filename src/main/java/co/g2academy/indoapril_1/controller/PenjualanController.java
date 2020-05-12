@@ -1,10 +1,10 @@
 package co.g2academy.indoapril_1.controller;
 
-import co.g2academy.indoapril_1.request.RequestOrder;
-import co.g2academy.indoapril_1.request.RequestOrderTgl;
+import co.g2academy.indoapril_1.request.RequestPenjualan;
+import co.g2academy.indoapril_1.request.RequestPenjualanTgl;
 import co.g2academy.indoapril_1.response.loginresponse.BaseResponse;
-import co.g2academy.indoapril_1.service.ServiceBarangMasuk;
-import co.g2academy.indoapril_1.service.ServiceOrder;
+import co.g2academy.indoapril_1.service.ServiceProductMasuk;
+import co.g2academy.indoapril_1.service.ServicePenjualan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,21 +15,21 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("api_1")
-public class OrderController {
+@RequestMapping("penjualan")
+public class PenjualanController {
 
     @Autowired
-    ServiceOrder service;
+    ServicePenjualan service;
 
     @Autowired
-    ServiceBarangMasuk serviceBarangMasuk;
+    ServiceProductMasuk serviceProductMasuk;
 
-    //Menambah Data Barang Masuk
+
     @PostMapping(
-            value = "/InputOrder",
+            value = "/addPenjualan",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<BaseResponse> postBarangMasuk( @RequestBody List<RequestOrder> request ){
+    public ResponseEntity<BaseResponse> addPenjualan( @RequestBody List<RequestPenjualan> request ){
 
         boolean validBarnag = true;
 
@@ -37,7 +37,7 @@ public class OrderController {
 
         for( int i = 0; i < request.size(); i++ ){
 
-            validBarnag = validBarnag && serviceBarangMasuk.findIdBarang( request.get(i).getId_Barang() );
+            validBarnag = validBarnag && serviceProductMasuk.findIdProduct( request.get(i).getId_Barang() );
 
             validQty = validQty && request.get(i).getQty_Detail() > 0;
 
@@ -61,10 +61,10 @@ public class OrderController {
 
     //lihat order by tgl
     @PostMapping(
-            value = "/getOrderByTgl",
+            value = "/getPenjualan",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<BaseResponse> getOrder( @RequestBody RequestOrderTgl request ){
+    public ResponseEntity<BaseResponse> getPenjualan( @RequestBody RequestPenjualanTgl request ){
 
         BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getOrderByTgl(request), "Order pada tanggal "+request.getTgl());
 

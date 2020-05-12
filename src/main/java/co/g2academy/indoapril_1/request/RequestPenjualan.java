@@ -8,21 +8,26 @@ import lombok.NoArgsConstructor;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestBarangMasuk {
+public class RequestPenjualan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int Id_Barang_Masuk;
-    private String Nomor_Surat_Jalan;
+    private int No;
+    private Integer Id_User;
     private Integer Id_Barang;
-    private Integer Qtt_Barang_Masuk;
-    private Date Tanggal_Pemesanan;
-    private Date Tanggal_Masuk;
+    private Integer Qty_Detail;
+
+    public int getId(){
+        return this.Id_User;
+    }
+
+    public int getQty(){
+        return this.Qty_Detail;
+    }
 
 }

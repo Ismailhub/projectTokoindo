@@ -27,8 +27,8 @@ public class SupplierController {
 
     }
 
-    @GetMapping("/getSuppliersAndBarang")
-    public ResponseEntity<BaseResponse> getSuppliersAndBarang(){
+    @GetMapping("/getSuppliersAndProduct")
+    public ResponseEntity<BaseResponse> getSuppliersAndProduct(){
 
         BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getSupplierAndBarangList(), "All Supplier & Produknya");
 
@@ -37,10 +37,10 @@ public class SupplierController {
     }
 
     @PostMapping(
-            value = "/setSupplier",
+            value = "/inputSupplier",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<BaseResponse> setSupplier( @RequestBody RequestSupplier request ){
+    public ResponseEntity<BaseResponse> inputSupplier( @RequestBody RequestSupplier request ){
 
         BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.create(request), "Sukses");
 
