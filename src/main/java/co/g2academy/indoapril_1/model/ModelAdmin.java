@@ -14,24 +14,21 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
-@EntityListeners(AuditingEntityListener.class)
+@Table(name = "tb_admin")
 @Entity
-public class UserModel implements Serializable {
+public class ModelAdmin implements Serializable {
 
     @Id //ganti2 kalo ada erorr kan ada 2 tuh Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_user")
-    private Integer id_User;
-    private String nama_User;
-    private String username;
+    private Integer idAdmin;
+    private String namaAdmin;
+    private String email;
     private String password;
-    private String alamat_Penempatan;
-    private String telephon_User;
+    private String telephon;
     private String status;
     private String token;
 
+}
+
 //    @OneToMany(mappedBy = "user")
 //    private List<ModelPenjualan> order;
-
-}

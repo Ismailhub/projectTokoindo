@@ -13,6 +13,10 @@ public interface RepositoryProduct extends JpaRepository<ModelProduct, Integer> 
 
     ModelProduct findByIdProduct( Integer id );
 
+    ModelProduct findByNamaProduct( String nama );
+
+    boolean existsByNamaProduct( String nama );
+
 //    @Query(value = "SELECT * FROM tb_barang WHERE id_barang = :idBarang", nativeQuery = true)
 //    ModelProduct findBarangById(@Param("idBarang") Integer idBarang );
 //

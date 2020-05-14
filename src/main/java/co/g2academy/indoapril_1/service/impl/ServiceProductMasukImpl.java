@@ -64,7 +64,7 @@ public class ServiceProductMasukImpl implements ServiceProductMasuk {
                 .collect(Collectors.toList());
     }
 
-    private ResponseProductMasuk toResponseProductMasukSimple(ModelProductMasuk entity ){
+    private ResponseProductMasuk toResponseProductMasukSimple( ModelProductMasuk entity ){
 
         return new ResponseProductMasuk(
         entity.getIdProductMasuk(),
@@ -74,8 +74,6 @@ public class ServiceProductMasukImpl implements ServiceProductMasuk {
         );
 
     }
-
-
 
     public boolean findIdProduct( Integer idBarang ){
 

@@ -20,7 +20,7 @@ public class RequestProductMasuk {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer idProductMasuk;
     private Integer qtyMasuk;
-    private Date tanggalMasuk;
+    private String tanggalMasuk;
     private Integer idProduct;
 
     public Integer getIdProduct() {

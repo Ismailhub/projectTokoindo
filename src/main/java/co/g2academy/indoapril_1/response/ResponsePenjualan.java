@@ -3,7 +3,7 @@ package co.g2academy.indoapril_1.response;
 import lombok.Data;
 
 @Data
-public class ResponseOrder {
+public class ResponsePenjualan {
 
     private String Id_Order;
     private String Tgl_Order;
@@ -11,7 +11,7 @@ public class ResponseOrder {
     private Integer Qty_Detail;
     private String Alamat_Penempatan;
 
-    public ResponseOrder(
+    public ResponsePenjualan(
             String id_Order,
             String tgl_Order,
             String nama_Barang,

@@ -8,10 +8,12 @@ import java.util.List;
 
 public interface ServiceSupplier {
 
-    List<ResponseSupplier> getSupplierList();
+    List<ResponseSupplier> getSupplierList(Integer page, Integer limit);
 
     List<ResponseSupplierAndBarang> getSupplierAndBarangList();
 
-    ResponseSupplier create( RequestSupplier request );
+    boolean create( RequestSupplier request );
+
+    boolean edit( RequestSupplier request );
 
 }

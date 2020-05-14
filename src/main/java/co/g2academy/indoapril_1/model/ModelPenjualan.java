@@ -37,4 +37,4 @@ public class ModelPenjualan implements Serializable {
 //            insertable = false,
 //            updatable = false
 //    )
-//    private UserModel user;
+//    private ModelAdmin user;

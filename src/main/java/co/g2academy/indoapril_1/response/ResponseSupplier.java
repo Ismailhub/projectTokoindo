@@ -13,21 +13,15 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class ResponseSupplier {
 
-    @Id
-    private int Id_Supplier;
-    private String Nama_Supplier;
-    private String Alamat_Supplier;
-    private String Telepon_Supplier;
+    private Integer idSupplier;
+    private String namaSupplier;
+    private String alamatSupplier;
+    private String telepon;
 
-    public ResponseSupplier (
-            int id_supplier,
-            String nama_supplier,
-            String alamat_supplier,
-            String telepon_supplier
-    ){
-        this.Id_Supplier = id_supplier;
-        this.Nama_Supplier = nama_supplier;
-        this.Alamat_Supplier = alamat_supplier;
-        this.Telepon_Supplier = telepon_supplier;
+    public ResponseSupplier(Integer idSupplier, String namaSupplier, String alamatSupplier, String telepon) {
+        this.idSupplier = idSupplier;
+        this.namaSupplier = namaSupplier;
+        this.alamatSupplier = alamatSupplier;
+        this.telepon = telepon;
     }
 }

@@ -13,13 +13,13 @@ public class ResponseProductMasuk {
 
     private Integer idProductMasuk;
     private Integer qtyMasuk;
-    private Date tanggalMasuk;
+    private String tanggalMasuk;
     private Integer idProduct;
 
     public ResponseProductMasuk(
             Integer idProductMasuk,
             Integer qtyMasuk,
-            Date tanggalMasuk,
+            String tanggalMasuk,
             Integer idProduct
     ) {
         this.idProductMasuk = idProductMasuk;

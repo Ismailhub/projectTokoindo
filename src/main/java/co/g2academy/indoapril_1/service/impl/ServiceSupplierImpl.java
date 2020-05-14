@@ -9,6 +9,8 @@ import co.g2academy.indoapril_1.response.ResponseSupplier;
 import co.g2academy.indoapril_1.response.ResponseSupplierAndBarang;
 import co.g2academy.indoapril_1.service.ServiceSupplier;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -26,9 +28,11 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 
     // menampilkan semua supplier
     @Override
-    public List<ResponseSupplier> getSupplierList(){
+    public List<ResponseSupplier> getSupplierList(Integer page, Integer limit){
 
-        return repository.findAll()
+        Pageable pageable = PageRequest.of(page,limit);
+
+        return repository.findAll(pageable)
                 .stream()
                 .map(this::toResponseSupplierSimpel)
                 .collect(Collectors.toList());
@@ -37,14 +41,70 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 
     private ResponseSupplier toResponseSupplierSimpel( ModelSupplier entity ){
 
-        return null;
-//        return new ResponseSupplier(
-//                entity.getId_Supplier(),
-//                entity.getNama_Supplier(),
-//                entity.getAlamat_Supplier(),
-//                entity.getTelepon_Supplier()
-//        );
+        return new ResponseSupplier(
+                entity.getIdSupplier(),
+                entity.getNamaSupplier(),
+                entity.getAlamatSupplier(),
+                entity.getTelepon()
+        );
     }
+
+
+
+    // menambah data supplier
+    @Override
+    @Transactional
+    public boolean create( RequestSupplier request ){
+
+        boolean dataExists = repository.existsByNamaSupplierAndAlamatSupplierAndTelepon( request.getNamaSupplier(), request.getAlamatSupplier(), request.getTelepon() );
+
+        if( !dataExists ){
+
+            ModelSupplier entity = toEntity( request );
+
+            ModelSupplier saveEntity = repository.save( entity );
+
+            return true;
+
+        }else {
+
+            return false;
+
+        }
+
+
+    }
+
+    private ModelSupplier toEntity( RequestSupplier request ){
+
+        return ModelSupplier
+                .builder()
+                .idSupplier( request.getIdSupplier() )
+                .namaSupplier( request.getNamaSupplier() )
+                .alamatSupplier( request.getAlamatSupplier() )
+                .telepon( request.getTelepon() )
+                .build();
+    }
+
+
+    @Override
+    @Transactional
+    public boolean edit( RequestSupplier request ){
+
+        if( repository.findById( request.getIdSupplier() ) != null ){
+
+            repository.save( toEntity(request) );
+
+            return true;
+
+        }else {
+
+            return false;
+
+        }
+
+    }
+
 
     // menampilkan supplier dan barangnya
     @Override
@@ -74,32 +134,6 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 //                entity.getHarga_Barang()
 //        );
 
-    }
-
-    // menambah data supplier
-    @Override
-    @Transactional
-    public ResponseSupplier create( RequestSupplier request ){
-
-        ModelSupplier entity = toEntity( request );
-
-        ModelSupplier saveEntity = repository.save( entity );
-
-        return toResponseSupplierSimpel( saveEntity );
-
-    }
-
-    private ModelSupplier toEntity(RequestSupplier request ){
-
-        return null;
-//        return ModelSupplier
-//                .builder()
-//                .Id_Supplier(request.getId_Supplier())
-//                .Nama_Supplier(request.getNama_Supplier())
-//                .Alamat_Supplier(request.getAlamat_Supplier())
-//                .Telepon_Supplier(request.getTelepon_Supplier())
-//                .build();
-//
     }
 
 }

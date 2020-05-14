@@ -17,12 +17,9 @@ public class RequestSupplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int Id_Supplier;
-    private String Nama_Supplier;
-    private String Alamat_Supplier;
-    private String Kota_Supplier;
-    private String Provinsi_Supplier;
-    private String Telepon_Supplier;
-    private String Status;
+    private Integer idSupplier;
+    private String namaSupplier;
+    private String alamatSupplier;
+    private String telepon;
 
 }

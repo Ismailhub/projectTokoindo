@@ -33,9 +33,18 @@ public class ModelProduct implements Serializable {
     private String deskripsi;
     private Integer idSupplier;
 
-    public void setQtyStock(Integer qtyStock) {
+    public void setQtyStock( Integer qtyStock ) {
+
         this.qtyStock += qtyStock;
+
     }
+
+    public Integer getQtyStock() {
+
+        return qtyStock;
+
+    }
+
 }
 
 //    @ManyToOne(

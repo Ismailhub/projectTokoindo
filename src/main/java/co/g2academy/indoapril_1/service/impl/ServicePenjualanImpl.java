@@ -6,7 +6,7 @@ import co.g2academy.indoapril_1.repository.RepositoryPenjualan;
 import co.g2academy.indoapril_1.repository.RepositoryPenjualanDetail;
 import co.g2academy.indoapril_1.request.RequestPenjualan;
 import co.g2academy.indoapril_1.request.RequestPenjualanTgl;
-import co.g2academy.indoapril_1.response.ResponseOrder;
+import co.g2academy.indoapril_1.response.ResponsePenjualan;
 import co.g2academy.indoapril_1.service.ServicePenjualan;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -107,7 +107,7 @@ public class ServicePenjualanImpl implements ServicePenjualan {
     }
 
     //menampilkan order by tgl
-    public List<ResponseOrder> getOrderByTgl( RequestPenjualanTgl request ){
+    public List<ResponsePenjualan> getOrderByTgl(RequestPenjualanTgl request ){
 
         return null;
 //        return repositoryDetail.findAll()
@@ -116,10 +116,10 @@ public class ServicePenjualanImpl implements ServicePenjualan {
 //                .collect( Collectors.toList() );
     }
 
-    private ResponseOrder toResponseOrderSimpel( ModelPenjualanDetail entity ){
+    private ResponsePenjualan toResponseOrderSimpel(ModelPenjualanDetail entity ){
 
         return null;
-//        return new ResponseOrder(
+//        return new ResponsePenjualan(
 //                entity.getOrder().getId_Order(),
 //                entity.getOrder().getTgl_Order(),
 //                entity.getBarang().getNama_Barang(),

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-@Repository("UserService")
+@Repository("ServiceAdmin")
 
 public class UserServiceImpl implements UserService {
     private UserRepository repository;
