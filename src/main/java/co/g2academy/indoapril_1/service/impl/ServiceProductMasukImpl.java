@@ -31,27 +31,27 @@ public class ServiceProductMasukImpl implements ServiceProductMasuk {
 
         for ( RequestProductMasuk dataMasuk : request ){
 
-            ModelProductMasuk entity = toEntity( dataMasuk );
-
-            repository.save( entity );
-
-            ModelProduct product = repositoryProduct.findByIdProduct( dataMasuk.getIdProduct() );
+            ModelProduct product = repositoryProduct.findByNamaProduct( dataMasuk.getNamaProduct() );
 
             product.setQtyStock( dataMasuk.getQtyMasuk() );
 
+            ModelProductMasuk entity = toEntity( dataMasuk , product.getIdProduct() );
+
             repositoryProduct.save( product );
+
+            repository.save( entity );
 
         }
 
     }
 
-    private ModelProductMasuk toEntity( RequestProductMasuk request ){
+    private ModelProductMasuk toEntity( RequestProductMasuk request, Integer idProduct ){
 
         return ModelProductMasuk.builder()
                 .idProductMasuk( null )
                 .qtyMasuk( request.getQtyMasuk() )
                 .tanggalMasuk( request.getTanggalMasuk() )
-                .idProduct( request.getIdProduct() )
+                .idProduct( idProduct )
                 .build();
     }
 
@@ -76,9 +76,9 @@ public class ServiceProductMasukImpl implements ServiceProductMasuk {
 
     }
 
-    public boolean findIdProduct( Integer idBarang ){
+    public boolean findNamaProduct( String namaProduct ){
 
-        if( repositoryProduct.findByIdProduct( idBarang ) != null ){
+        if( repositoryProduct.findByNamaProduct( namaProduct ) != null ){
 
             System.out.println("barang ada");
 

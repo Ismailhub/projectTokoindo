@@ -21,13 +21,15 @@ public class RequestProductMasuk {
     private Integer idProductMasuk;
     private Integer qtyMasuk;
     private Date tanggalMasuk;
-    private Integer idProduct;
+    private String namaProduct;
 
-    public Integer getIdProduct() {
 
-        return idProduct;
+    public String getNamaProduct() {
+
+        return namaProduct;
 
     }
+
 
     public Integer getQtyMasuk() {
 

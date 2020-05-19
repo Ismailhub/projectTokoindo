@@ -34,19 +34,19 @@ public class ProductMasukController {
     )
     public ResponseEntity<BaseResponse> addProductStock( @RequestBody List<RequestProductMasuk> request ) {
 
-        boolean validBarnag = true;
+        boolean validNamaBarang = true;
 
         boolean validQty = true;
 
         for( int i = 0; i < request.size(); i++ ){
 
-            validBarnag = validBarnag && service.findIdProduct( request.get(i).getIdProduct() );
+            validNamaBarang = validNamaBarang && service.findNamaProduct( request.get(i).getNamaProduct() );
 
             validQty = validQty && request.get(i).getQtyMasuk() > 0;
 
         }
 
-        if ( validBarnag && validQty ){
+        if ( validNamaBarang && validQty ){
 
             service.create( request );
 

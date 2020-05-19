@@ -14,6 +14,6 @@ public interface ServiceProductMasuk {
     //Tambah Data Barang Masuk
     void create( List<RequestProductMasuk> request );
 
-    boolean findIdProduct( Integer idBarang );
+    boolean findNamaProduct( String namaProduct );
 
 }

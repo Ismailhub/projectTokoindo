@@ -44,6 +44,14 @@ public class ModelProduct implements Serializable {
     )
     private ModelSupplier supplier;
 
+
+    public Integer getIdProduct() {
+
+        return idProduct;
+
+    }
+
+
     public void setQtyStock( Integer qtyStock ) {
 
         this.qtyStock += qtyStock;
