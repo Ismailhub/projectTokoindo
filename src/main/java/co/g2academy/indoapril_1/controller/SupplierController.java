@@ -28,10 +28,11 @@ public class SupplierController {
 
     }
 
+    // belum selesai
     @GetMapping("/getSuppliersAndProduct")
     public ResponseEntity<BaseResponse> getSuppliersAndProduct(){
 
-        BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getSupplierAndBarangList(), "All Supplier & Produknya");
+        BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getSupplierAndProductList(), "All Supplier & Produknya");
 
         return new ResponseEntity<>( baseResponse,HttpStatus.OK );
 
@@ -42,6 +43,21 @@ public class SupplierController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> addSupplier( @RequestBody RequestSupplier request ){
+
+        if ( request.getIdSupplier() != null
+                || request.getNamaSupplier() == null
+                && request.getAlamatSupplier() == null
+                && request.getTelepon() == null
+                && request.getNamaSupplier() == ""
+                && request.getAlamatSupplier() == ""
+                && request.getTelepon() == ""
+        ){
+
+            BaseResponse baseResponse = new BaseResponse(HttpStatus.BAD_REQUEST, "Gagal", request , " data tidak valid ");
+
+            return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
+
+        }
 
         if( service.create(request) ){
 
@@ -54,6 +70,7 @@ public class SupplierController {
             BaseResponse baseResponse = new BaseResponse(HttpStatus.BAD_REQUEST, "Gagal", request, "data sudah ada");
 
             return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
+
         }
 
     }
@@ -63,6 +80,21 @@ public class SupplierController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> editSupplier( @RequestBody RequestSupplier request){
+
+        if ( request.getIdSupplier() != null
+                || request.getNamaSupplier() == null
+                && request.getAlamatSupplier() == null
+                && request.getTelepon() == null
+                && request.getNamaSupplier() == ""
+                && request.getAlamatSupplier() == ""
+                && request.getTelepon() == ""
+        ){
+
+            BaseResponse baseResponse = new BaseResponse(HttpStatus.BAD_REQUEST, "Gagal", request , " data tidak valid ");
+
+            return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
+
+        }
 
         if ( service.edit(request) ){
 

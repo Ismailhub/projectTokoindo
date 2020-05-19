@@ -3,7 +3,6 @@ package co.g2academy.indoapril_1.response;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.Id;
 
 @Data
@@ -12,39 +11,39 @@ import javax.persistence.Id;
 public class ResponseInventoryReport {
 
     @Id
-    private int Id_Barang;
-    private String Nama_Barang;
-    private Integer Qtt_Barang_Masuk;
-    private Integer Qty_Stock;
-    private Integer Qty_Detail;
-    private Integer Qty_Min_Stock;
+    private int idProduct;
+    private String namaProduct;
+    private Integer qtyProductMasuk;
+    private Integer qtyStock;
+    private Integer qtyPenjualan;
+    private Integer qtyMinStock;
 
     public ResponseInventoryReport(
-            int id_Barang,
-            String nama_Barang,
-            Integer qtt_Barang_Masuk,
-            Integer qty_Detail,
-            Integer qty_Stock,
-            Integer qty_Min_Stock
+            int idProduct,
+            String namaProduct,
+            Integer qtyProductMasuk,
+            Integer qtyStock,
+            Integer qtyPenjualan,
+            Integer qtyMinStock
     ) {
-        this.Id_Barang = id_Barang;
-        this.Nama_Barang = nama_Barang;
-        this.Qtt_Barang_Masuk = qtt_Barang_Masuk;
-        this.Qty_Detail = qty_Detail;
-        this.Qty_Stock = qty_Stock;
-        this.Qty_Min_Stock = qty_Min_Stock;
+        this.idProduct = idProduct;
+        this.namaProduct = namaProduct;
+        this.qtyProductMasuk = qtyProductMasuk;
+        this.qtyStock = qtyStock;
+        this.qtyPenjualan = qtyPenjualan;
+        this.qtyMinStock = qtyMinStock;
     }
 
-    public int getId_Barang() {
+    public int getIdProduct() {
 
-        return this.Id_Barang;
+        return this.idProduct;
     }
 
-    public Integer getQty_Detail() {
+    public Integer getQtyPenjualan() {
 
-        if(this.Qty_Detail != null){
+        if(this.qtyPenjualan != null){
 
-            return this.Qty_Detail;
+            return this.qtyPenjualan;
 
         }else {
 
@@ -53,39 +52,47 @@ public class ResponseInventoryReport {
         }
     }
 
-    public Integer getQtt_Barang_Masuk() {
+    public Integer getQtyProductMasuk() {
 
-        return this.Qtt_Barang_Masuk;
+        if(this.qtyProductMasuk != null){
 
-    }
+            return this.qtyProductMasuk;
 
-    public Integer getQty_Stock() {
+        }else {
 
-        return this.Qty_Stock;
+            return 0;
 
-    }
-
-    public String getNama_Barang() {
-
-        return this.Nama_Barang;
+        }
 
     }
 
-    public Integer getQty_Min_Stock() {
+    public Integer getQtyStock() {
 
-        return this.Qty_Min_Stock;
-
-    }
-
-    public void setQtt_Barang_Masuk( Integer qtt_Barang_Masuk ) {
-
-        this.Qtt_Barang_Masuk = qtt_Barang_Masuk;
+        return this.qtyStock;
 
     }
 
-    public void setQty_Detail( Integer qty_Detail ) {
+    public String getNamaProduct() {
 
-        this.Qty_Detail = qty_Detail;
+        return this.namaProduct;
+
+    }
+
+    public Integer getQtyMinStock() {
+
+        return this.qtyMinStock;
+
+    }
+
+    public void setQtyProductMasuk( Integer qtyProductMasuk ) {
+
+        this.qtyProductMasuk = qtyProductMasuk;
+
+    }
+
+    public void setQtyPenjualan( Integer qtyPenjualan ) {
+
+        this.qtyPenjualan = qtyPenjualan;
 
     }
 

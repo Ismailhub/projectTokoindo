@@ -49,7 +49,16 @@ public class RequestProduct {
     }
 
     public Integer getQtyStock() {
-        return qtyStock;
+
+        if(this.qtyStock != null){
+
+            return qtyStock;
+
+        }else {
+
+            return 0;
+
+        }
     }
 
     public Integer getHargaBeli() {

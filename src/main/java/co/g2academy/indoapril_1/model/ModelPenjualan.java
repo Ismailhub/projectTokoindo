@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.util.Date;
 
 @Data
@@ -28,13 +28,6 @@ public class ModelPenjualan implements Serializable {
     private String statusPembayaran;
     private Date tanggalPenjualan;
     private Integer idCustomer;
+    private byte[] gambarBuktiTransfer;
 
 }
-
-//    @ManyToOne
-//    @JoinColumn(
-//            name = "id_user",
-//            insertable = false,
-//            updatable = false
-//    )
-//    private ModelAdmin user;

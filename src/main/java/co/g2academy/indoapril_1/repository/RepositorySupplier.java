@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface RepositorySupplier extends JpaRepository<ModelSupplier, Integer> {
 
-    List<ModelSupplier> findAll();
-
     boolean existsByNamaSupplierAndAlamatSupplierAndTelepon(String nama, String alamat, String telepon);
 
+    boolean existsByIdSupplier(Integer idSupplier);
+
 //    @Query("SELECT new co.g2academy.indoapril_1.response.RepositorySupplierAndBarang(a.Nama_Supplier, b.Nama_Barang) FROM ModelSupplier a JOIN a.ModelProduct b")
-//    List<ResponseSupplierAndBarang> getSupplierAndBarangList();
+//    List<ResponseSupplierAndProducts> getSupplierAndBarangList();
 
 }

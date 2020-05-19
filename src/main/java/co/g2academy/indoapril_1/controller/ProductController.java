@@ -24,7 +24,7 @@ public class ProductController {
     public ResponseEntity<BaseResponse> addProduct( @RequestBody RequestProduct request ){
 
         if ( request.getQtyMinStock() > 0
-                && request.getQtyStock() > -1
+                && request.getQtyStock() == 0
                 && request.getHargaBeli() > 0
                 && request.getHargaJual() > 0
         ){
@@ -63,6 +63,23 @@ public class ProductController {
         if ( request.getQtyMinStock() > 0
                 && request.getHargaBeli() > 0
                 && request.getHargaJual() > 0
+                && request.getNamaProduct() != null
+                && request.getMerek() != null
+                && request.getKategori() != null
+                && request.getGambar() != null
+                && request.getUkuran() != null
+                && request.getRasa() != null
+                && request.getIsiPerkarton() != null
+                && request.getDeskripsi() != null
+                && request.getIdSupplier() != null
+                && request.getNamaProduct() != ""
+                && request.getMerek() != ""
+                && request.getKategori() != ""
+                && request.getGambar() != ""
+                && request.getUkuran() != ""
+                && request.getRasa() != ""
+                && request.getIsiPerkarton() != ""
+                && request.getDeskripsi() != ""
         ){
 
             if( service.edit( request ) ){
@@ -91,12 +108,21 @@ public class ProductController {
 
     @GetMapping("/getProducts")
     public ResponseEntity<BaseResponse> getProducts(@RequestParam(defaultValue = "0")Integer page,
-                                                    @RequestParam(defaultValue = "100")Integer limit
+                                                     @RequestParam(defaultValue = "100")Integer limit
                                                     ){
 
         BaseResponse baseResponse = new BaseResponse( HttpStatus.OK,"Ok",service.getProducts(page,limit),"List Product" );
 
         return new ResponseEntity<>(baseResponse,HttpStatus.OK);
+
+    }
+
+    @GetMapping("/cekMinimumStock")
+    public ResponseEntity<BaseResponse> cekMinimumStock(){
+
+        BaseResponse baseResponse = new BaseResponse( HttpStatus.OK,"Ok",service.getCekMinStock(),"Cek Minimum Stock" );
+
+        return new ResponseEntity<>( baseResponse,HttpStatus.OK );
 
     }
 

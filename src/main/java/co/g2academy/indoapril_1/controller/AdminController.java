@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
@@ -55,11 +54,17 @@ public class AdminController {
                 && request.getPassword() != null
                 && request.getNamaAdmin() != null
                 && request.getTelephon() != null
+                && request.getEmail() != ""
+                && request.getPassword() != ""
+                && request.getNamaAdmin() != ""
+                && request.getTelephon() != ""
         ){
 
             if ( service.creat( request ) ){
 
                 BaseResponse baseResponse = new BaseResponse( HttpStatus.OK, "Berhasil", request, "Tambah Admin Berhasil");
+
+                request.setPassword("");
 
                 return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
@@ -81,7 +86,6 @@ public class AdminController {
 
     }
 
-
     @PostMapping(
             value = "/editAdmin",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -93,6 +97,10 @@ public class AdminController {
                 && request.getPassword() != null
                 && request.getNamaAdmin() != null
                 && request.getTelephon() != null
+                && request.getEmail() != ""
+                && request.getPassword() != ""
+                && request.getNamaAdmin() != ""
+                && request.getTelephon() != ""
         ){
 
             if ( service.edit( request ) ){
@@ -118,4 +126,5 @@ public class AdminController {
         }
 
     }
+
 }

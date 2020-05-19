@@ -37,6 +37,14 @@ public class ServiceAdminImpl implements ServiceAdmin {
 
         ModelAdmin entity = repository.getOneByEmail( request.getEmail() );
 
+        String status = entity.getStatus();
+
+        if ( status.equals("nonaktif") ){
+
+            return new  BaseResponse(HttpStatus.FORBIDDEN, "FAILED", request, "akun nonaktif!");
+
+        }
+
         if ( entity == null ) {
 
             return new  BaseResponse(HttpStatus.FORBIDDEN, "FAILED", null, "USERNAME SALAH!");
@@ -68,7 +76,6 @@ public class ServiceAdminImpl implements ServiceAdmin {
                 entity.getIdAdmin(),
                 entity.getNamaAdmin(),
                 entity.getEmail(),
-                null,
                 entity.getTelephon(),
                 entity.getStatus(),
                 entity.getToken());

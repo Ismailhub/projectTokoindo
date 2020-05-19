@@ -13,6 +13,8 @@ public interface RepositoryProduct extends JpaRepository<ModelProduct, Integer> 
 
     ModelProduct findByIdProduct( Integer id );
 
+    List<ModelProduct> findAllByOrderByIdProduct();
+
     ModelProduct findByNamaProduct( String nama );
 
     boolean existsByNamaProduct( String nama );

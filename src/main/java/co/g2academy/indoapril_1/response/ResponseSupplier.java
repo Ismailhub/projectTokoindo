@@ -18,10 +18,16 @@ public class ResponseSupplier {
     private String alamatSupplier;
     private String telepon;
 
-    public ResponseSupplier(Integer idSupplier, String namaSupplier, String alamatSupplier, String telepon) {
+    public ResponseSupplier(
+            Integer idSupplier,
+            String namaSupplier,
+            String alamatSupplier,
+            String telepon
+    ) {
         this.idSupplier = idSupplier;
         this.namaSupplier = namaSupplier;
         this.alamatSupplier = alamatSupplier;
         this.telepon = telepon;
     }
+
 }

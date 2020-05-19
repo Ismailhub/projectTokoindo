@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Builder
@@ -20,7 +20,7 @@ public class RequestProductMasuk {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer idProductMasuk;
     private Integer qtyMasuk;
-    private String tanggalMasuk;
+    private Date tanggalMasuk;
     private Integer idProduct;
 
     public Integer getIdProduct() {

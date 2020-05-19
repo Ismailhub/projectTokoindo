@@ -6,7 +6,7 @@ import co.g2academy.indoapril_1.repository.RepositoryProduct;
 import co.g2academy.indoapril_1.repository.RepositorySupplier;
 import co.g2academy.indoapril_1.request.RequestSupplier;
 import co.g2academy.indoapril_1.response.ResponseSupplier;
-import co.g2academy.indoapril_1.response.ResponseSupplierAndBarang;
+import co.g2academy.indoapril_1.response.ResponseSupplierAndProducts;
 import co.g2academy.indoapril_1.service.ServiceSupplier;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +24,7 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 
     private RepositorySupplier repository;
 
-    private RepositoryProduct repBarang;
+    private RepositoryProduct repProduct;
 
     // menampilkan semua supplier
     @Override
@@ -50,7 +50,6 @@ public class ServiceSupplierImpl implements ServiceSupplier {
     }
 
 
-
     // menambah data supplier
     @Override
     @Transactional
@@ -72,7 +71,6 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 
         }
 
-
     }
 
     private ModelSupplier toEntity( RequestSupplier request ){
@@ -91,7 +89,7 @@ public class ServiceSupplierImpl implements ServiceSupplier {
     @Transactional
     public boolean edit( RequestSupplier request ){
 
-        if( repository.findById( request.getIdSupplier() ) != null ){
+        if( repository.existsByIdSupplier(request.getIdSupplier()) ){
 
             repository.save( toEntity(request) );
 
@@ -106,33 +104,31 @@ public class ServiceSupplierImpl implements ServiceSupplier {
     }
 
 
+
     // menampilkan supplier dan barangnya
     @Override
-    public List<ResponseSupplierAndBarang> getSupplierAndBarangList(){
+    public List<ResponseSupplierAndProducts> getSupplierAndProductList(){
 
-        return null;
-//        return  repBarang.findAll()
-//                .stream()
-//                .map( this::toResponseSupplierAndBarangSimpel )
-//                .collect( Collectors.toList() );
+        return repProduct.findAll()
+                .stream()
+                .map( this::toResponseSupplierAndProductSimpel )
+                .collect( Collectors.toList() );
 
     }
 
-    private ResponseSupplierAndBarang toResponseSupplierAndBarangSimpel( ModelProduct entity ){
+    private ResponseSupplierAndProducts toResponseSupplierAndProductSimpel( ModelProduct entity ){
 
-        return null;
-//        return new ResponseSupplierAndBarang(
-//                entity.getSupplier().getId_Supplier(),
-//                entity.getSupplier().getNama_Supplier(),
-//                entity.getSupplier().getAlamat_Supplier(),
-//                entity.getSupplier().getTelepon_Supplier(),
-//                entity.getIdBarang(),
-//                entity.getNama_Barang(),
-//                entity.getQty_Min_Stock(),
-//                entity.getQty_Stock(),
-//                entity.getSatuan(),
-//                entity.getHarga_Barang()
-//        );
+        return new ResponseSupplierAndProducts(
+                entity.getSupplier().getIdSupplier(),
+                entity.getSupplier().getNamaSupplier(),
+                entity.getSupplier().getTelepon(),
+                entity.getIdProduct(),
+                entity.getNamaProduct(),
+                entity.getQtyMinStock(),
+                entity.getQtyStock(),
+                entity.getHargaBeli(),
+                entity.getHargaJual()
+        );
 
     }
 

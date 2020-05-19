@@ -1,7 +1,7 @@
 package co.g2academy.indoapril_1.controller;
 
-import co.g2academy.indoapril_1.request.RequestPenjualan;
-import co.g2academy.indoapril_1.request.RequestPenjualanTgl;
+import co.g2academy.indoapril_1.request.RequestSetStatusPembayaran;
+import co.g2academy.indoapril_1.request.RequestTanggal;
 import co.g2academy.indoapril_1.response.loginresponse.BaseResponse;
 import co.g2academy.indoapril_1.service.ServiceProductMasuk;
 import co.g2academy.indoapril_1.service.ServicePenjualan;
@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Date;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -24,34 +24,29 @@ public class PenjualanController {
     @Autowired
     ServiceProductMasuk serviceProductMasuk;
 
-
+    //lihat order by tgl
     @PostMapping(
-            value = "/addPenjualan",
+            value = "/getPenjualan",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<BaseResponse> addPenjualan( @RequestBody List<RequestPenjualan> request ){
+    public ResponseEntity<BaseResponse> getPenjualan( @RequestBody RequestTanggal request ){
 
-        boolean validBarnag = true;
+        Date tanggalAwal = request.getTgl();
 
-        boolean validQty = true;
+        Date tanggalAkhir = request.getTglAkhir();
 
-        for( int i = 0; i < request.size(); i++ ){
+        Integer hasilPerbandingan = tanggalAwal.compareTo(tanggalAkhir);
 
-            validBarnag = validBarnag && serviceProductMasuk.findIdProduct( request.get(i).getId_Barang() );
+        if ( hasilPerbandingan <= 0 ){
 
-            validQty = validQty && request.get(i).getQty_Detail() > 0;
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.OK, "OK", service.getOrderByTgl(request), " Data Seluruh Penjualan dan Pesanan " );
 
-        }
+            return new ResponseEntity<>( baseResponse, HttpStatus.OK );
 
-        if ( validBarnag && validQty ){
-
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "Suksess", service.create(request), "Order Berhasil");
-
-            return new ResponseEntity<>( baseResponse, HttpStatus.CREATED );
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "Failed", request, "Qty Minimal 1 & ID Barang Harus Sudah Terdaftar");
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST, "Gagal", request , " Tanggal tidak valid " );
 
             return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
@@ -59,16 +54,55 @@ public class PenjualanController {
 
     }
 
-    //lihat order by tgl
+    //lihat data sales
     @PostMapping(
-            value = "/getPenjualan",
+            value = "/getDataSales",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<BaseResponse> getPenjualan( @RequestBody RequestPenjualanTgl request ){
+    public ResponseEntity<BaseResponse> getDataSales( @RequestBody RequestTanggal request ){
 
-        BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getOrderByTgl(request), "Order pada tanggal "+request.getTgl());
+        Date tanggalAwal = request.getTgl();
 
-        return new ResponseEntity<>( baseResponse,HttpStatus.OK );
+        Date tanggalAkhir = request.getTglAkhir();
+
+        Integer hasilPerbandingan = tanggalAwal.compareTo(tanggalAkhir);
+
+        if ( hasilPerbandingan <= 0 ){
+
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.OK, "200",service.getDataSales(request)," Data Sales/Transaksi dan Keuntungan");
+
+            return new ResponseEntity<>(baseResponse,HttpStatus.OK);
+
+        }else {
+
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST, "Gagal", request , " Tanggal tidak valid " );
+
+            return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
+
+        }
+
+    }
+
+    @GetMapping("/getStatusPembayaran")
+    public ResponseEntity<BaseResponse> getStatusPembayaran(){
+
+        BaseResponse baseResponse = new BaseResponse( HttpStatus.OK, "200",service.getStatusBayar()," Data Status Pembayaran ");
+
+        return new ResponseEntity<>(baseResponse,HttpStatus.OK);
+
+    }
+
+    @PostMapping(
+            value = "/setStatusPembayaran",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<BaseResponse> setStatusPembayaran( @RequestBody RequestSetStatusPembayaran request ){
+
+        service.setStatusPembayaran( request );
+
+        BaseResponse baseResponse = new BaseResponse( HttpStatus.OK, "200",request," Status pembayaran berhasil dirubah ");
+
+        return new ResponseEntity<>(baseResponse,HttpStatus.OK);
 
     }
 

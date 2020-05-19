@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Builder
@@ -13,13 +13,13 @@ public class ResponseProductMasuk {
 
     private Integer idProductMasuk;
     private Integer qtyMasuk;
-    private String tanggalMasuk;
+    private Date tanggalMasuk;
     private Integer idProduct;
 
     public ResponseProductMasuk(
             Integer idProductMasuk,
             Integer qtyMasuk,
-            String tanggalMasuk,
+            java.util.Date tanggalMasuk,
             Integer idProduct
     ) {
         this.idProductMasuk = idProductMasuk;

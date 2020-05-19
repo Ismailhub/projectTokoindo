@@ -22,4 +22,20 @@ public class RequestSupplier {
     private String alamatSupplier;
     private String telepon;
 
+    public Integer getIdSupplier() {
+        return idSupplier;
+    }
+
+    public String getNamaSupplier() {
+        return namaSupplier;
+    }
+
+    public String getAlamatSupplier() {
+        return alamatSupplier;
+    }
+
+    public String getTelepon() {
+        return telepon;
+    }
+
 }

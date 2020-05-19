@@ -1,5 +1,6 @@
 package co.g2academy.indoapril_1.service;
 
+import co.g2academy.indoapril_1.model.ModelProduct;
 import co.g2academy.indoapril_1.request.RequestProduct;
 import co.g2academy.indoapril_1.response.ResponseProduct;
 
@@ -12,4 +13,6 @@ public interface ServiceProduct {
     boolean edit( RequestProduct request );
 
     List<ResponseProduct> getProducts(Integer page, Integer limit);
+
+    List<ModelProduct> getCekMinStock();
 }

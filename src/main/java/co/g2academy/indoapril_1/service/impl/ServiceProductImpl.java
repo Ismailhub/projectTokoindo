@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,21 +43,6 @@ public class ServiceProductImpl implements ServiceProduct {
         if ( !existsName && existsSupplier ){
 
             repository.save( toEntity(request) );
-
-            if ( request.getQtyStock() > 0 ){
-
-                Integer idProduct = repository.findByNamaProduct( request.getNamaProduct() ).getIdProduct();
-
-                ModelProductMasuk productMasuk = ModelProductMasuk.builder()
-                        .idProductMasuk( null )
-                        .qtyMasuk( request.getQtyStock() )
-                        .tanggalMasuk( getTanggal() )
-                        .idProduct( idProduct )
-                        .build();
-
-                repositoryProductMasuk.save( productMasuk );
-
-            }
 
             return true;
 
@@ -146,6 +130,13 @@ public class ServiceProductImpl implements ServiceProduct {
             return false;
 
         }
+    }
+
+
+    public List<ModelProduct> getCekMinStock(){
+
+        return repository.findAll().stream().filter(data -> data.getQtyStock() < data.getQtyMinStock()).collect(Collectors.toList());
+
     }
 
 }

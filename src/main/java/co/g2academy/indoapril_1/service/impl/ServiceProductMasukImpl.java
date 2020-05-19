@@ -5,6 +5,7 @@ import co.g2academy.indoapril_1.model.ModelProductMasuk;
 import co.g2academy.indoapril_1.repository.RepositoryProduct;
 import co.g2academy.indoapril_1.repository.RepositoryProductMasuk;
 import co.g2academy.indoapril_1.request.RequestProductMasuk;
+import co.g2academy.indoapril_1.request.RequestTanggal;
 import co.g2academy.indoapril_1.response.ResponseProductMasuk;
 import co.g2academy.indoapril_1.service.ServiceProductMasuk;
 import lombok.AllArgsConstructor;
@@ -44,7 +45,7 @@ public class ServiceProductMasukImpl implements ServiceProductMasuk {
 
     }
 
-    private ModelProductMasuk toEntity(RequestProductMasuk request ){
+    private ModelProductMasuk toEntity( RequestProductMasuk request ){
 
         return ModelProductMasuk.builder()
                 .idProductMasuk( null )

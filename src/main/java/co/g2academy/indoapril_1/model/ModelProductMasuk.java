@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Builder
@@ -23,18 +23,7 @@ public class ModelProductMasuk implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer idProductMasuk;
     private Integer qtyMasuk;
-    private String tanggalMasuk;
+    private Date tanggalMasuk;
     private Integer idProduct;
 
 }
-
-//    @ManyToOne(
-//            fetch = FetchType.LAZY,
-//            optional = false
-//    )
-//    @JoinColumn(
-//            name = "idBarang",
-//            insertable = false,
-//            updatable = false
-//    )
-//    private ModelProduct masterBarang;

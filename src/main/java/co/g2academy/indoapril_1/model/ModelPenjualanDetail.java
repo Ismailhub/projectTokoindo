@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -26,6 +25,19 @@ public class ModelPenjualanDetail implements Serializable {
     private Integer idProduct;
     private String idPenjualan;
 
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(name = "idPenjualan", insertable = false, updatable = false )
+    private ModelPenjualan penjualan;
+
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(name = "idProduct", insertable = false, updatable = false )
+    private ModelProduct products;
 }
 
 ////    private String Nama_Barang;

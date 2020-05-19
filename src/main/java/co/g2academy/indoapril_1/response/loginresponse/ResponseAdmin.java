@@ -12,7 +12,6 @@ public class ResponseAdmin {
     private Integer idAdmin;
     private String namaAdmin;
     private String email;
-    private String password;
     private String telephon;
     private String status;
     private String token;
@@ -22,7 +21,6 @@ public class ResponseAdmin {
             Integer idAdmin,
             String namaAdmin,
             String email,
-            String password,
             String telephon,
             String status,
             String token
@@ -30,7 +28,6 @@ public class ResponseAdmin {
         this.idAdmin = idAdmin;
         this.namaAdmin = namaAdmin;
         this.email = email;
-        this.password = password;
         this.telephon = telephon;
         this.status = status;
         this.token = token;

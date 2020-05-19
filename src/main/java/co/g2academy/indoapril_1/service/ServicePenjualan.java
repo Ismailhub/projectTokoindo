@@ -1,15 +1,21 @@
 package co.g2academy.indoapril_1.service;
 
 import co.g2academy.indoapril_1.request.RequestPenjualan;
-import co.g2academy.indoapril_1.request.RequestPenjualanTgl;
+import co.g2academy.indoapril_1.request.RequestSetStatusPembayaran;
+import co.g2academy.indoapril_1.request.RequestTanggal;
+import co.g2academy.indoapril_1.response.ResponseDataSales;
+import co.g2academy.indoapril_1.response.ResponseKonfirmasiPembayaran;
 import co.g2academy.indoapril_1.response.ResponsePenjualan;
 
 import java.util.List;
 
 public interface ServicePenjualan {
 
-    String create( List<RequestPenjualan> request );
+    List<ResponsePenjualan> getOrderByTgl(RequestTanggal request );
 
-    List<ResponsePenjualan> getOrderByTgl(RequestPenjualanTgl request );
+    List<ResponseDataSales> getDataSales(RequestTanggal request);
 
+    List<ResponseKonfirmasiPembayaran> getStatusBayar();
+
+    void setStatusPembayaran( RequestSetStatusPembayaran request );
 }

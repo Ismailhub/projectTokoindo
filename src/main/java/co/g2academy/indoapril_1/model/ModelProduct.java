@@ -31,7 +31,18 @@ public class ModelProduct implements Serializable {
     private String rasa;
     private String isiPerkarton;
     private String deskripsi;
+
     private Integer idSupplier;
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(
+            name = "idSupplier",
+            insertable = false,
+            updatable = false
+    )
+    private ModelSupplier supplier;
 
     public void setQtyStock( Integer qtyStock ) {
 
@@ -46,10 +57,3 @@ public class ModelProduct implements Serializable {
     }
 
 }
-
-//    @ManyToOne(
-//            fetch = FetchType.LAZY,
-//            optional = false
-//    )
-//    @JoinColumn(name = "Id_Supplier")
-//    private ModelSupplier supplier;
