@@ -25,7 +25,13 @@ public class AdminController {
             value = "/",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<BaseResponse> postLogin( @RequestBody LoginRequest request ) throws NoSuchAlgorithmException {
+    public ResponseEntity<BaseResponse> postLogin( @RequestBody LoginRequest request,
+                                                   @RequestHeader(required = false) String email,
+                                                   @RequestHeader(required = false) String password
+    ) throws NoSuchAlgorithmException {
+
+        System.out.println(email);
+        System.out.println(password);
 
         if ( request.getEmail() != null && request.getPassword() != null || request.getEmail() == "" && request.getPassword() == "" ){
 
@@ -90,7 +96,18 @@ public class AdminController {
             value = "/editAdmin",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<BaseResponse> editAdmin( @RequestBody RequestAdmin request ) throws NoSuchAlgorithmException {
+    public ResponseEntity<BaseResponse> editAdmin( @RequestBody RequestAdmin request,
+                                                   @RequestHeader(required = false) String token
+    ) throws NoSuchAlgorithmException {
+
+        // cek token
+        if ( service.Autentication(token) ){
+
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
+
+            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+
+        }
 
         if ( request.getIdAdmin() != null
                 && request.getEmail() != null
@@ -106,6 +123,8 @@ public class AdminController {
             if ( service.edit( request ) ){
 
                 BaseResponse baseResponse = new BaseResponse( HttpStatus.OK, "Berhasil", request, "Edit Admin Berhasil");
+
+                request.setPassword(null);
 
                 return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 

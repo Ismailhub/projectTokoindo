@@ -13,4 +13,5 @@ public interface RepositoryPenjualanDetail extends JpaRepository<ModelPenjualanD
 
     List<ModelPenjualanDetail> findAllByPenjualanTanggalPenjualanBetween( Date tanggal, Date tglAkhir, Sort sort);
 
+    List<ModelPenjualanDetail> findAllByIdPenjualan( String idPenjualan );
 }

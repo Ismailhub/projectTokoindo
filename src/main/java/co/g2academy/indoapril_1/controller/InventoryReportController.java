@@ -3,6 +3,7 @@ package co.g2academy.indoapril_1.controller;
 import co.g2academy.indoapril_1.request.RequestInventoryReport;
 import co.g2academy.indoapril_1.request.RequestTanggal;
 import co.g2academy.indoapril_1.response.loginresponse.BaseResponse;
+import co.g2academy.indoapril_1.service.ServiceAdmin;
 import co.g2academy.indoapril_1.service.ServiceInventoryReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,12 +21,26 @@ public class InventoryReportController {
     @Autowired
     ServiceInventoryReport service;
 
+    @Autowired
+    ServiceAdmin autentikasi;
+
     //melihat inventory report
     @PostMapping(
             value = "/getInventoryReport",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<BaseResponse> getInventoryReport( @RequestBody RequestTanggal request ){
+    public ResponseEntity<BaseResponse> getInventoryReport( @RequestBody RequestTanggal request,
+                                                            @RequestHeader String token
+    ){
+
+        // cek token
+        if ( autentikasi.Autentication(token) ){
+
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
+
+            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+
+        }
 
         Date tanggalAwal = request.getTgl();
 

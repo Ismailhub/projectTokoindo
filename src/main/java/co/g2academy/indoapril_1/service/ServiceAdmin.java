@@ -15,4 +15,5 @@ public interface ServiceAdmin {
 
     boolean edit( RequestAdmin request ) throws NoSuchAlgorithmException;
 
+    boolean Autentication(String token);
 }

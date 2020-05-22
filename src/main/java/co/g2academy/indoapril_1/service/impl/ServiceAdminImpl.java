@@ -138,4 +138,11 @@ public class ServiceAdminImpl implements ServiceAdmin {
         }
 
     }
+
+    @Override
+    public boolean Autentication( String token ){
+
+        return repository.existsByToken(token);
+
+    }
 }

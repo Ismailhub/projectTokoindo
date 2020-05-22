@@ -1,24 +1,29 @@
 package co.g2academy.indoapril_1.service.impl;
 
-import co.g2academy.indoapril_1.model.ModelPenjualan;
-import co.g2academy.indoapril_1.model.ModelPenjualanDetail;
-import co.g2academy.indoapril_1.repository.RepositoryProduct;
-import co.g2academy.indoapril_1.repository.RepositoryPenjualan;
-import co.g2academy.indoapril_1.repository.RepositoryPenjualanDetail;
-import co.g2academy.indoapril_1.request.RequestPenjualan;
-import co.g2academy.indoapril_1.request.RequestSetStatusPembayaran;
+import co.g2academy.indoapril_1.model.*;
+import co.g2academy.indoapril_1.repository.*;
+import co.g2academy.indoapril_1.request.RequestIdPenjualan;
 import co.g2academy.indoapril_1.request.RequestTanggal;
 import co.g2academy.indoapril_1.response.ResponseDataSales;
 import co.g2academy.indoapril_1.response.ResponseKonfirmasiPembayaran;
 import co.g2academy.indoapril_1.response.ResponsePenjualan;
+import co.g2academy.indoapril_1.response.ResponseTracking;
+import co.g2academy.indoapril_1.response.loginresponse.BaseResponse;
 import co.g2academy.indoapril_1.service.ServicePenjualan;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +37,11 @@ public class ServicePenjualanImpl implements ServicePenjualan {
 
     private RepositoryPenjualan repositoryPenjualan;
 
+    private RepositoryTracking repositoryTracking;
+
+    private RepositoryRefundStatus repositoryRefundStatus;
+
+    private RepositoryRefund repositoryRefund;
     //menampilkan order by tgl
     public List<ResponsePenjualan> getOrderByTgl( RequestTanggal request ){
 
@@ -144,6 +154,18 @@ public class ServicePenjualanImpl implements ServicePenjualan {
 
     private ResponseKonfirmasiPembayaran toResponseKonfirmasiPembayaranSimpel( ModelPenjualan entity ){
 
+        String imageBase64 = new String();
+
+        try {
+
+            imageBase64 = "data:image/png;base64, "+toBase64(entity.getGambarBuktiTransfer());
+
+        }catch (Exception e){
+
+            System.out.println(e);
+
+        }
+
         return new ResponseKonfirmasiPembayaran(
                 entity.getIdPenjualan(),
                 entity.getTotalPenjualan(),
@@ -152,29 +174,210 @@ public class ServicePenjualanImpl implements ServicePenjualan {
                 entity.getMetodePembayaran(),
                 entity.getTanggalPenjualan(),
                 entity.getIdCustomer(),
-                entity.getGambarBuktiTransfer()
+                imageBase64
+        );
+
+    }
+    private String toBase64( Blob imageBlob ) throws SQLException {
+
+        if ( imageBlob != null ){
+
+            try {
+
+                int blobLength = (int) imageBlob.length();
+
+                byte[] byteImage = imageBlob.getBytes(1, blobLength);
+
+                return Base64.encodeBase64String(byteImage);
+
+            }catch (Exception e){
+
+                System.out.println(e);
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+    public boolean setStatusTransaksi( RequestIdPenjualan request ){
+
+        ModelPenjualan dataPenjualan = repositoryPenjualan
+                .findByIdPenjualanAndGambarBuktiTransferNotNull( request.getIdPenjualan() );
+
+        if ( dataPenjualan == null ){
+
+            return false;
+
+        }
+
+        String statusPembayaran = dataPenjualan.getStatusPembayaran();
+
+        String statusTracking = new String();
+
+        switch (statusPembayaran){
+            case "belum":
+                List<ModelPenjualanDetail> dataPenjualanDetail = repositoryDetail.findAllByIdPenjualan( request.getIdPenjualan() );
+
+                for ( ModelPenjualanDetail data : dataPenjualanDetail ){
+
+                    ModelProduct dataProduct = repositoryProduct.findByIdProduct( data.getIdProduct() );
+
+                    dataProduct.reduceQtyStock( data.getQtyPenjualan() );
+
+                    repositoryProduct.save( dataProduct );
+
+                    statusTracking = "Pembayaran Dikonfirmasi";
+                    dataPenjualan.setStatusTracking("2");
+
+                }
+
+                dataPenjualan.setStatusPembayaran("sudah");
+
+                break;
+
+            case "sudah":
+
+                String curentStatusTrackingPenjualan = dataPenjualan.getStatusTracking();
+
+                switch ( curentStatusTrackingPenjualan ){
+                    // case 1 menunggu pembayaran digenerate ketika pembuatan penjualan
+                    // case 2 pembayaran dikonfimasi digenenrate ketika status pembayaran diset sudah
+                    case "2":
+                        statusTracking = "Sedang Diproses";
+                        dataPenjualan.setStatusTracking("3");
+                        break;
+                    case "3":
+                        statusTracking = "Sedang Dikirim Ke Alamat Tujuan";
+                        dataPenjualan.setStatusTracking("4");
+                        break;
+                    // case 4 sudah diterima digenerate oleh customer
+                    default:
+                        System.out.println("hanya sampai set 4");
+                }
+
+                break;
+
+            default:
+                System.out.println(" kondisi tidak dikenali ");
+
+        }
+
+        repositoryPenjualan.save(dataPenjualan);
+
+        // 'Menunggu Pembayaran','Pembayaran Dikonfirmasi','Sedang Diproses','Sedang Dikirim Ke Alamat Tujuan','Sudah Diterima'
+        ModelTracking dataTracking = generateEntityTracking( request.getIdPenjualan(), statusTracking );
+
+        repositoryTracking.save(dataTracking);
+
+        return true;
+    }
+
+
+    private ModelTracking generateEntityTracking(String idPenjualan, String status){
+
+        Date nowDate = new Date();
+
+        try {
+
+            nowDate = getTanggal();
+
+        }catch (Exception e){
+
+            System.out.println(e);
+
+        }
+
+        return ModelTracking
+                .builder()
+                .no( null )
+                .status( status )
+                .tanggal( nowDate )
+                .idPenjualan( idPenjualan )
+                .build();
+
+    }
+
+    private Date getTanggal() throws ParseException {
+
+        DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+
+        Date tempDate = new Date();
+
+        String sDate = dateFormat.format(tempDate);
+
+        return new SimpleDateFormat( "yyyy-MM-dd" ).parse(sDate);
+
+    }
+
+    public BaseResponse getTracking( String idPenjualan ){
+
+        System.out.println(idPenjualan);
+
+        List<ResponseTracking> resultTracking = repositoryTracking
+                .findByIdPenjualan(idPenjualan)
+                .stream()
+                .map(this::toTrackingResponseSimpel)
+                .collect(Collectors.toList());
+
+        System.out.println(resultTracking);
+
+        return new  BaseResponse (
+                HttpStatus.OK,
+                "200",
+                resultTracking,
+                "Data History Pesanan"
+                );
+    }
+
+    private ResponseTracking toTrackingResponseSimpel(ModelTracking entity ){
+
+        return new ResponseTracking(
+                entity.getPenjualan().getIdPenjualan(),
+                entity.getPenjualan().getTotalBayar(),
+                entity.getPenjualan().getAlamatTujuan(),
+                entity.getPenjualan().getMetodePembayaran(),
+                entity.getStatus(),
+                entity.getTanggal()
         );
 
     }
 
-    public void setStatusPembayaran( RequestSetStatusPembayaran request ){
+    public List<ModelRefundStatus> getRefundStatus(){
 
-        ModelPenjualan dataPenjualan ;
+        return repositoryRefundStatus.findAllByStatusRefundDisetujui("menunggu");
 
-        switch (request.getMetodePembayaran()){
+    }
 
-            case "transfer":
-                dataPenjualan = repositoryPenjualan.findByIdPenjualanAndGambarBuktiTransferNotNull(request.getIdPenjualan());
-                dataPenjualan.setStatusPembayaran("sudah");
-                repositoryPenjualan.save(dataPenjualan);
-                break;
-            case "indopay":
-                dataPenjualan = repositoryPenjualan.findByIdPenjualan(request.getIdPenjualan());
-                dataPenjualan.setStatusPembayaran("sudah");
-                repositoryPenjualan.save(dataPenjualan);
-                break;
+    public ModelRefundStatus setRefundStatus( String idPenjualan, String isDisetujui ){
 
-        }
+        ModelRefundStatus dataRefundStatus = repositoryRefundStatus.findByIdPenjualan( idPenjualan );
+
+        dataRefundStatus.setStatusRefundDisetujui( isDisetujui );
+
+        repositoryRefundStatus.save( dataRefundStatus );
+
+        return dataRefundStatus;
+
+    }
+
+    public List<ModelRefund> getRefund(){
+
+        return repositoryRefund.findAllByTransferSelesaiAndNoRekeningNotNull("belum");
+
+    }
+
+    public ModelRefund setRefund(Integer idRefundStatus){
+
+        ModelRefund dataRefund = repositoryRefund.findByIdRefundStatusAndNoRekeningNotNull(idRefundStatus);
+
+        dataRefund.setTransferSelesai("sudah");
+
+        repositoryRefund.save(dataRefund);
+
+        return dataRefund;
 
     }
 

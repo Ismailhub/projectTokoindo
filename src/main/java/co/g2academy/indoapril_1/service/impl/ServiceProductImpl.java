@@ -9,11 +9,17 @@ import co.g2academy.indoapril_1.request.RequestProduct;
 import co.g2academy.indoapril_1.response.ResponseProduct;
 import co.g2academy.indoapril_1.service.ServiceProduct;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,6 +59,52 @@ public class ServiceProductImpl implements ServiceProduct {
 
     }
 
+    public ResponseProduct saveGambar( Integer idProduct, MultipartFile file ) throws IOException, SQLException {
+
+        ModelProduct dataProduct = repository.findByIdProduct(idProduct);
+
+        System.out.println(dataProduct);
+
+        dataProduct.setGambar( toBlob(file) );
+
+        repository.save(dataProduct);
+
+        return toResponseProductSimpel(dataProduct);
+
+    }
+
+    private Blob toBlob(MultipartFile file) throws IOException, SQLException {
+
+        byte[] bytes = file.getBytes();
+
+        return new SerialBlob(bytes);
+
+    }
+
+    private String toBase64( Blob imageBlob ) throws SQLException {
+
+        if ( imageBlob != null ){
+
+            try {
+
+                int blobLength = (int) imageBlob.length();
+
+                byte[] byteImage = imageBlob.getBytes(1, blobLength);
+
+                return Base64.encodeBase64String(byteImage);
+
+            }catch (Exception e){
+
+                System.out.println(e);
+
+            }
+
+        }
+
+        return null;
+
+    }
+
     private ModelProduct toEntity( RequestProduct request ){
 
         return ModelProduct.builder()
@@ -64,24 +116,15 @@ public class ServiceProductImpl implements ServiceProduct {
                 .hargaBeli( request.getHargaBeli() )
                 .hargaJual( request.getHargaJual() )
                 .kategori( request.getKategori() )
-                .gambar( request.getGambar() )
+                .gambar( null )
                 .ukuran( request.getUkuran() )
                 .rasa( request.getRasa() )
                 .isiPerkarton( request.getIsiPerkarton() )
                 .deskripsi( request.getDeskripsi() )
                 .idSupplier( request.getIdSupplier() )
                 .build();
+
     }
-
-    private String getTanggal() {
-
-        DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-
-        java.util.Date date = new Date();
-
-        return dateFormat.format(date);
-    }
-
 
     public List<ResponseProduct> getProducts(Integer page, Integer limit){
 
@@ -91,7 +134,19 @@ public class ServiceProductImpl implements ServiceProduct {
 
     }
 
-    private ResponseProduct toResponseProductSimpel( ModelProduct entity ){
+    private ResponseProduct toResponseProductSimpel( ModelProduct entity ) {
+
+        String imageBase64 = new String();
+
+        try {
+
+            imageBase64 = "data:image/png;base64, "+toBase64(entity.getGambar());
+
+        }catch (Exception e){
+
+            System.out.println(e);
+
+        }
 
         return new ResponseProduct(
                 entity.getIdProduct(),
@@ -102,7 +157,7 @@ public class ServiceProductImpl implements ServiceProduct {
                 entity.getHargaBeli(),
                 entity.getHargaJual(),
                 entity.getKategori(),
-                entity.getGambar(),
+                imageBase64,
                 entity.getUkuran(),
                 entity.getRasa(),
                 entity.getIsiPerkarton(),
@@ -136,6 +191,12 @@ public class ServiceProductImpl implements ServiceProduct {
     public List<ModelProduct> getCekMinStock(){
 
         return repository.findAll().stream().filter(data -> data.getQtyStock() < data.getQtyMinStock()).collect(Collectors.toList());
+
+    }
+
+    public boolean productIsExsistById(Integer idProduct){
+
+        return repository.existsById(idProduct);
 
     }
 

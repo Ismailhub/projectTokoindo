@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Blob;
 
 @Data
 @Builder
@@ -26,7 +27,8 @@ public class ModelProduct implements Serializable {
     private Integer hargaBeli;
     private Integer hargaJual;
     private String kategori;
-    private String gambar;
+    @Lob
+    private Blob gambar;
     private String ukuran;
     private String rasa;
     private String isiPerkarton;
@@ -58,9 +60,27 @@ public class ModelProduct implements Serializable {
 
     }
 
+    public void reduceQtyStock( Integer qtyStock ) {
+
+        this.qtyStock -= qtyStock;
+
+    }
+
     public Integer getQtyStock() {
 
         return qtyStock;
+
+    }
+
+    public Blob getGambar() {
+
+        return gambar;
+
+    }
+
+    public void setGambar( Blob gambar ) {
+
+        this.gambar = gambar;
 
     }
 

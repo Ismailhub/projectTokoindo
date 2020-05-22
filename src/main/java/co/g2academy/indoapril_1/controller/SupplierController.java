@@ -2,6 +2,7 @@ package co.g2academy.indoapril_1.controller;
 
 import co.g2academy.indoapril_1.request.RequestSupplier;
 import co.g2academy.indoapril_1.response.loginresponse.BaseResponse;
+import co.g2academy.indoapril_1.service.ServiceAdmin;
 import co.g2academy.indoapril_1.service.ServiceSupplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,10 +18,24 @@ public class SupplierController {
     @Autowired
     ServiceSupplier service;
 
+    @Autowired
+    ServiceAdmin autentikasi;
+
     // untuk menampilkan semua supplier
     @GetMapping("/getSuppliers")
     public ResponseEntity<BaseResponse> getSuppliers(@RequestParam(defaultValue = "0")Integer page,
-                                                     @RequestParam(defaultValue = "100")Integer limit){
+                                                     @RequestParam(defaultValue = "100")Integer limit,
+                                                     @RequestHeader String token
+    ){
+
+        // cek token
+        if ( autentikasi.Autentication(token) ){
+
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
+
+            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+
+        }
 
         BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getSupplierList(page, limit), "All Supplier");
 
@@ -30,7 +45,16 @@ public class SupplierController {
 
     // belum selesai
     @GetMapping("/getSuppliersAndProduct")
-    public ResponseEntity<BaseResponse> getSuppliersAndProduct(){
+    public ResponseEntity<BaseResponse> getSuppliersAndProduct(@RequestHeader String token){
+
+        // cek token
+        if ( autentikasi.Autentication(token) ){
+
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
+
+            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+
+        }
 
         BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getSupplierAndProductList(), "All Supplier & Produknya");
 
@@ -42,7 +66,18 @@ public class SupplierController {
             value = "/addSupplier",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<BaseResponse> addSupplier( @RequestBody RequestSupplier request ){
+    public ResponseEntity<BaseResponse> addSupplier( @RequestBody RequestSupplier request,
+                                                     @RequestHeader String token
+    ){
+
+        // cek token
+        if ( autentikasi.Autentication(token) ){
+
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
+
+            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+
+        }
 
         if ( request.getIdSupplier() != null
                 || request.getNamaSupplier() == null
@@ -79,7 +114,18 @@ public class SupplierController {
             value = "/editSupplier",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<BaseResponse> editSupplier( @RequestBody RequestSupplier request){
+    public ResponseEntity<BaseResponse> editSupplier( @RequestBody RequestSupplier request,
+                                                      @RequestHeader String token
+    ){
+
+        // cek token
+        if ( autentikasi.Autentication(token) ){
+
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
+
+            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+
+        }
 
         if ( request.getIdSupplier() != null
                 || request.getNamaSupplier() == null
