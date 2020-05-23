@@ -17,7 +17,7 @@ public interface ServiceProduct {
 
     List<ResponseProduct> getProducts(Integer page, Integer limit);
 
-    List<ModelProduct> getCekMinStock();
+    List<ResponseProduct> getCekMinStock();
 
     ResponseProduct saveGambar( Integer idProduct, MultipartFile file ) throws IOException, SQLException;
 

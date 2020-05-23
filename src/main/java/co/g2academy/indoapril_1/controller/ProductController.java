@@ -24,65 +24,6 @@ public class ProductController {
     @Autowired
     ServiceAdmin autentikasi;
 
-    @RequestMapping(
-            value = "/uploadGambar/{idProduct}",
-            method = RequestMethod.POST,
-            consumes = {"multipart/form-data"}
-    )
-    public ResponseEntity<BaseResponse> uploadGambar(@PathVariable Integer idProduct,
-                                                     @RequestParam(value = "file") MultipartFile file,
-                                                     @RequestHeader String token
-                                                     ){
-
-        // cek token
-        if ( autentikasi.Autentication(token) ){
-
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
-
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
-
-        }
-
-        System.out.println(file.getOriginalFilename());
-
-        System.out.println(file.getContentType());
-
-        if ( !file.isEmpty() ){
-            try {
-
-                if ( service.productIsExsistById(idProduct) ){
-
-                    BaseResponse baseResponse = new BaseResponse( HttpStatus.OK,"Ok",service.saveGambar(idProduct, file),"berhasil upload gambar product" );
-
-                    return new ResponseEntity<>( baseResponse,HttpStatus.OK );
-
-                }else {
-
-                    BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal",null,"Product tidak ditemukan" );
-
-                    return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
-
-                }
-
-            }catch (Exception e){
-
-                System.out.println(e);
-
-                BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal Upload",null,"Gagal upload gambar Produck" );
-
-                return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
-
-            }
-
-        }else {
-
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal Upload","Gagal","File Kosong" );
-
-            return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
-
-        }
-    }
-
     @PostMapping(
             value = "/addProduct",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -143,6 +84,66 @@ public class ProductController {
 
         }
 
+    }
+
+
+    @RequestMapping(
+            value = "/uploadGambar/{idProduct}",
+            method = RequestMethod.POST,
+            consumes = {"multipart/form-data"}
+    )
+    public ResponseEntity<BaseResponse> uploadGambar(@PathVariable Integer idProduct,
+                                                     @RequestParam(value = "file") MultipartFile file,
+                                                     @RequestHeader String token
+                                                     ){
+
+        // cek token
+        if ( autentikasi.Autentication(token) ){
+
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
+
+            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+
+        }
+
+        System.out.println(file.getOriginalFilename());
+
+        System.out.println(file.getContentType());
+
+        if ( !file.isEmpty() ){
+            try {
+
+                if ( service.productIsExsistById(idProduct) ){
+
+                    BaseResponse baseResponse = new BaseResponse( HttpStatus.OK,"Ok",service.saveGambar(idProduct, file),"berhasil upload gambar product" );
+
+                    return new ResponseEntity<>( baseResponse,HttpStatus.OK );
+
+                }else {
+
+                    BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal",null,"Product tidak ditemukan" );
+
+                    return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
+
+                }
+
+            }catch (Exception e){
+
+                System.out.println(e);
+
+                BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal Upload",null,"Gagal upload gambar Produck" );
+
+                return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
+
+            }
+
+        }else {
+
+            BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal Upload","Gagal","File Kosong" );
+
+            return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
+
+        }
     }
 
 
@@ -227,6 +228,7 @@ public class ProductController {
         return new ResponseEntity<>(baseResponse,HttpStatus.OK);
 
     }
+
 
     @GetMapping("/cekMinimumStock")
     public ResponseEntity<BaseResponse> cekMinimumStock(@RequestHeader String token){

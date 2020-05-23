@@ -74,8 +74,6 @@ public class ServiceInventoryReportImpl implements ServiceInventoryReport {
 
         boolean lastIdProductKluar = true;
 
-        System.out.println("sampe 1");
-
         for( int i = 0; i < tempProductMasuk.size() || i < tempOrderDetail.size() ; i++ ){
 
             // untuk list total masuk
@@ -140,8 +138,6 @@ public class ServiceInventoryReportImpl implements ServiceInventoryReport {
 
         }
 
-        System.out.println("sampe 2");
-
         for ( int k = 0; k < resultProduct.size(); k++ ){
 
             int idProduct = resultProduct.get(k).getIdProduct();
@@ -159,8 +155,6 @@ public class ServiceInventoryReportImpl implements ServiceInventoryReport {
             }
 
         }
-
-        System.out.println("sampe 3");
 
         return resultProduct;
 

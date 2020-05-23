@@ -113,8 +113,8 @@ public class PenjualanController {
 
     }
 
-    @GetMapping("/getStatusPembayaran")
-    public ResponseEntity<BaseResponse> getStatusPembayaran( @RequestHeader String token ){
+    @GetMapping("/getStatusTransaksi")
+    public ResponseEntity<BaseResponse> getStatusTransaksi( @RequestHeader String token ){
 
         // cek token
         if ( autentikasi.Autentication(token) ){

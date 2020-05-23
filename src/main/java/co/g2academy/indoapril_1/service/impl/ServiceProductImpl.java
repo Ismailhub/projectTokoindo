@@ -188,9 +188,9 @@ public class ServiceProductImpl implements ServiceProduct {
     }
 
 
-    public List<ModelProduct> getCekMinStock(){
+    public List<ResponseProduct> getCekMinStock(){
 
-        return repository.findAll().stream().filter(data -> data.getQtyStock() < data.getQtyMinStock()).collect(Collectors.toList());
+        return repository.findAll().stream().filter(data -> data.getQtyStock() < data.getQtyMinStock()).map(this::toResponseProductSimpel).collect(Collectors.toList());
 
     }
 

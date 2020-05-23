@@ -127,8 +127,8 @@ public class SupplierController {
 
         }
 
-        if ( request.getIdSupplier() != null
-                || request.getNamaSupplier() == null
+        if ( request.getIdSupplier() == null
+                && request.getNamaSupplier() == null
                 && request.getAlamatSupplier() == null
                 && request.getTelepon() == null
                 && request.getNamaSupplier() == ""

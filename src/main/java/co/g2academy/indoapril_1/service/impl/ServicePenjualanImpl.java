@@ -42,6 +42,7 @@ public class ServicePenjualanImpl implements ServicePenjualan {
     private RepositoryRefundStatus repositoryRefundStatus;
 
     private RepositoryRefund repositoryRefund;
+
     //menampilkan order by tgl
     public List<ResponsePenjualan> getOrderByTgl( RequestTanggal request ){
 
@@ -230,6 +231,7 @@ public class ServicePenjualanImpl implements ServicePenjualan {
                     repositoryProduct.save( dataProduct );
 
                     statusTracking = "Pembayaran Dikonfirmasi";
+
                     dataPenjualan.setStatusTracking("2");
 
                 }
@@ -253,6 +255,9 @@ public class ServicePenjualanImpl implements ServicePenjualan {
                         statusTracking = "Sedang Dikirim Ke Alamat Tujuan";
                         dataPenjualan.setStatusTracking("4");
                         break;
+                    case "4":
+                        System.out.println("Batas Set sudah Max");
+                        return true;
                     // case 4 sudah diterima digenerate oleh customer
                     default:
                         System.out.println("hanya sampai set 4");
@@ -261,6 +266,7 @@ public class ServicePenjualanImpl implements ServicePenjualan {
                 break;
 
             default:
+
                 System.out.println(" kondisi tidak dikenali ");
 
         }
