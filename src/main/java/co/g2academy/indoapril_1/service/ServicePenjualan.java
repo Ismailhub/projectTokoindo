@@ -8,7 +8,6 @@ import co.g2academy.indoapril_1.response.ResponseDataSales;
 import co.g2academy.indoapril_1.response.ResponseKonfirmasiPembayaran;
 import co.g2academy.indoapril_1.response.ResponsePenjualan;
 import co.g2academy.indoapril_1.response.loginresponse.BaseResponse;
-
 import java.util.List;
 
 public interface ServicePenjualan {

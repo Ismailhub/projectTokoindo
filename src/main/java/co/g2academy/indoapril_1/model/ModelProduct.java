@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Blob;
+
 
 @Data
 @Builder
@@ -33,8 +33,9 @@ public class ModelProduct implements Serializable {
     private String rasa;
     private String isiPerkarton;
     private String deskripsi;
-
     private Integer idSupplier;
+
+
     @ManyToOne(
             fetch = FetchType.LAZY,
             optional = false
@@ -52,7 +53,6 @@ public class ModelProduct implements Serializable {
         return idProduct;
 
     }
-
 
     public void setQtyStock( Integer qtyStock ) {
 

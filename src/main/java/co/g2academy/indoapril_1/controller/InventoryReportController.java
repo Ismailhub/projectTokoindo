@@ -1,6 +1,5 @@
 package co.g2academy.indoapril_1.controller;
 
-import co.g2academy.indoapril_1.request.RequestInventoryReport;
 import co.g2academy.indoapril_1.request.RequestTanggal;
 import co.g2academy.indoapril_1.response.loginresponse.BaseResponse;
 import co.g2academy.indoapril_1.service.ServiceAdmin;
@@ -10,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Date;
+
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -24,7 +23,12 @@ public class InventoryReportController {
     @Autowired
     ServiceAdmin autentikasi;
 
-    //melihat inventory report
+
+    /*
+     *
+     * @Untuk Laporan Inventory
+     *
+     */
     @PostMapping(
             value = "/getInventoryReport",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -35,10 +39,14 @@ public class InventoryReportController {
 
         // cek token
         if ( autentikasi.Autentication(token) ){
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        request,
+                        "Harus Login"
+                );
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
-
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
@@ -46,19 +54,19 @@ public class InventoryReportController {
 
         Date tanggalAkhir = request.getTglAkhir();
 
-        Integer hasilPerbandingan = tanggalAwal.compareTo(tanggalAkhir);
+        Integer hasilPerbandingan = tanggalAwal.compareTo( tanggalAkhir );
 
         if ( hasilPerbandingan <= 0 ){
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getInventoryReportBy( request ), "Inventory Report");
+                BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getInventoryReportBy( request ), "Inventory Report");
 
-            return new ResponseEntity<>( baseResponse,HttpStatus.OK );
+                return new ResponseEntity<>( baseResponse,HttpStatus.OK );
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST, "Gagal", request , " Tanggal tidak valid " );
+                BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST, "Gagal", request , " Tanggal tidak valid " );
 
-            return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
+                return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
         }
 

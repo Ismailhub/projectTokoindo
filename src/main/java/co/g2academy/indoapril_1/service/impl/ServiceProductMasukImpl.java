@@ -5,16 +5,15 @@ import co.g2academy.indoapril_1.model.ModelProductMasuk;
 import co.g2academy.indoapril_1.repository.RepositoryProduct;
 import co.g2academy.indoapril_1.repository.RepositoryProductMasuk;
 import co.g2academy.indoapril_1.request.RequestProductMasuk;
-import co.g2academy.indoapril_1.request.RequestTanggal;
 import co.g2academy.indoapril_1.response.ResponseProductMasuk;
 import co.g2academy.indoapril_1.service.ServiceProductMasuk;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @AllArgsConstructor
@@ -25,7 +24,12 @@ public class ServiceProductMasukImpl implements ServiceProductMasuk {
 
     private RepositoryProductMasuk repository;
 
-    //Menambah Data Barang Masuk
+
+    /*
+     *
+     * @Fungsi Menambah Stock Product
+     *
+     */
     @Transactional
     public void create( List<RequestProductMasuk> request ){
 
@@ -45,17 +49,12 @@ public class ServiceProductMasukImpl implements ServiceProductMasuk {
 
     }
 
-    private ModelProductMasuk toEntity( RequestProductMasuk request, Integer idProduct ){
 
-        return ModelProductMasuk.builder()
-                .idProductMasuk( null )
-                .qtyMasuk( request.getQtyMasuk() )
-                .tanggalMasuk( request.getTanggalMasuk() )
-                .idProduct( idProduct )
-                .build();
-    }
-
-    //Menampilkan Data Barang Masuk All
+    /*
+     *
+     * @Fungsi Menampilkan Semua Product
+     *
+     */
     @Override
     public List<ResponseProductMasuk> getProductMasukList() {
 
@@ -65,13 +64,20 @@ public class ServiceProductMasukImpl implements ServiceProductMasuk {
                 .collect(Collectors.toList());
     }
 
+
+    /*
+     *
+     * @Fungsi - Fungsi Untuk Helper
+     *
+     */
+
     private ResponseProductMasuk toResponseProductMasukSimple( ModelProductMasuk entity ){
 
         return new ResponseProductMasuk(
-        entity.getIdProductMasuk(),
-        entity.getQtyMasuk(),
-        entity.getTanggalMasuk(),
-        entity.getIdProduct()
+                entity.getIdProductMasuk(),
+                entity.getQtyMasuk(),
+                entity.getTanggalMasuk(),
+                entity.getIdProduct()
         );
 
     }
@@ -93,4 +99,16 @@ public class ServiceProductMasukImpl implements ServiceProductMasuk {
         }
 
     }
+
+    private ModelProductMasuk toEntity( RequestProductMasuk request, Integer idProduct ){
+
+        return ModelProductMasuk.builder()
+                .idProductMasuk( null )
+                .qtyMasuk( request.getQtyMasuk() )
+                .tanggalMasuk( request.getTanggalMasuk() )
+                .idProduct( idProduct )
+                .build();
+    }
+
+
 }

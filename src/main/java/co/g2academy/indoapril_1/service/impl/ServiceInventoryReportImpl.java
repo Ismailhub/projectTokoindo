@@ -2,7 +2,6 @@ package co.g2academy.indoapril_1.service.impl;
 
 import co.g2academy.indoapril_1.model.*;
 import co.g2academy.indoapril_1.repository.*;
-import co.g2academy.indoapril_1.request.RequestInventoryReport;
 import co.g2academy.indoapril_1.request.RequestTanggal;
 import co.g2academy.indoapril_1.response.ResponseInventoryReport;
 import co.g2academy.indoapril_1.service.ServiceInventoryReport;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Service
 @AllArgsConstructor
@@ -28,6 +28,12 @@ public class ServiceInventoryReportImpl implements ServiceInventoryReport {
     @Autowired
     RepositoryPenjualanDetail repositoryPenjualanDetail;
 
+
+    /*
+     *
+     * @Untuk Laporan Inventory
+     *
+     */
     public List<ResponseInventoryReport>getInventoryReportBy( RequestTanggal request ){
 
         List<ResponseInventoryReport> resultProduct = repositoryProduct.findAllByOrderByIdProduct()
@@ -35,15 +41,19 @@ public class ServiceInventoryReportImpl implements ServiceInventoryReport {
                 .map(this::toResponseInventoryReportSimpel)
                 .collect(Collectors.toList());
 
-//        List<ModelProductMasuk> tempBarangMasuk = repostiryProductMasuk.findAll(Sort.by(Sort.Direction.ASC,"IdProduct"));
-
         Sort sort = Sort.by("idProduct");
 
-        List<ModelProductMasuk> tempProductMasuk = repostiryProductMasuk.findAllByTanggalMasukBetween(request.getTgl(), request.getTglAkhir(), sort);
+        List<ModelProductMasuk> tempProductMasuk = repostiryProductMasuk.findAllByTanggalMasukBetween(
+                request.getTgl(),
+                request.getTglAkhir(),
+                sort
+        );
 
-        System.out.println(tempProductMasuk);
-
-        List<ModelPenjualanDetail> tempOrderDetail = repositoryPenjualanDetail.findAllByPenjualanTanggalPenjualanBetween(request.getTgl(), request.getTglAkhir(), sort);
+        List<ModelPenjualanDetail> tempOrderDetail = repositoryPenjualanDetail.findAllByPenjualanTanggalPenjualanBetween(
+                request.getTgl(),
+                request.getTglAkhir(),
+                sort
+        );
 
         int noProductMasuk = 0;
 
@@ -56,13 +66,13 @@ public class ServiceInventoryReportImpl implements ServiceInventoryReport {
 
         try {
 
-            totalProductMasuk = tempProductMasuk.get(0).getQtyMasuk();
+                totalProductMasuk = tempProductMasuk.get(0).getQtyMasuk();
 
-            totalProductKeluar = tempOrderDetail.get(0).getQtyPenjualan();
+                totalProductKeluar = tempOrderDetail.get(0).getQtyPenjualan();
 
-        }catch (Exception e){
+        }catch ( Exception e ){
 
-            System.out.println(" salah satu data ada yg kosong "+e);
+                System.out.println(" salah satu data ada yg kosong "+e);
 
         }
 
@@ -74,65 +84,65 @@ public class ServiceInventoryReportImpl implements ServiceInventoryReport {
 
         boolean lastIdProductKluar = true;
 
-        for( int i = 0; i < tempProductMasuk.size() || i < tempOrderDetail.size() ; i++ ){
+        for ( int i = 0; i < tempProductMasuk.size() || i < tempOrderDetail.size() ; i++ ){
 
             // untuk list total masuk
             try {
 
-                if ( resultProduct.get(noProductMasuk).getIdProduct() == tempProductMasuk.get( i+1 ).getIdProduct() ){
+                    if ( resultProduct.get(noProductMasuk).getIdProduct() == tempProductMasuk.get( i+1 ).getIdProduct() ){
 
-                    totalProductMasuk += tempProductMasuk.get( i+1 ).getQtyMasuk();
+                            totalProductMasuk += tempProductMasuk.get( i+1 ).getQtyMasuk();
 
-                }else {
+                    }else {
 
-                    listTotalMasuk.put( resultProduct.get(noProductMasuk).getIdProduct(), totalProductMasuk );
+                            listTotalMasuk.put( resultProduct.get(noProductMasuk).getIdProduct(), totalProductMasuk );
+
+                            noProductMasuk++;
+
+                            totalProductMasuk = tempProductMasuk.get( i+1 ).getQtyMasuk();
+
+                    }
+
+            }catch ( Exception e ){
+
+                    if ( lastIdProductMasuk ){
+
+                        listTotalMasuk.put( resultProduct.get(noProductMasuk).getIdProduct(), totalProductMasuk );
+
+                        lastIdProductMasuk = false;
+                    }
 
                     noProductMasuk++;
-
-                    totalProductMasuk = tempProductMasuk.get( i+1 ).getQtyMasuk();
-
-                }
-
-            }catch (Exception e){
-
-                if ( lastIdProductMasuk ){
-
-                    listTotalMasuk.put( resultProduct.get(noProductMasuk).getIdProduct(), totalProductMasuk );
-
-                    lastIdProductMasuk = false;
-                }
-
-                noProductMasuk++;
             }
 
             // untuk list total keluar
             try {
 
-                if ( resultProduct.get(noProductKeluar).getIdProduct() == tempOrderDetail.get( i+1 ).getIdProduct() ){
+                    if ( resultProduct.get(noProductKeluar).getIdProduct() == tempOrderDetail.get( i+1 ).getIdProduct() ){
 
-                    totalProductKeluar += tempOrderDetail.get( i+1 ).getQtyPenjualan();
+                            totalProductKeluar += tempOrderDetail.get( i+1 ).getQtyPenjualan();
 
-                }else {
+                    }else {
 
-                    listTotalKeluar.put( resultProduct.get(noProductKeluar).getIdProduct(), totalProductKeluar );
+                            listTotalKeluar.put( resultProduct.get(noProductKeluar).getIdProduct(), totalProductKeluar );
 
-                    noProductKeluar++;
+                            noProductKeluar++;
 
-                    totalProductKeluar = tempOrderDetail.get(i+1).getQtyPenjualan();
+                            totalProductKeluar = tempOrderDetail.get(i+1).getQtyPenjualan();
 
-                }
+                    }
 
             }catch ( Exception e ){
 
-                if ( lastIdProductKluar ){
+                    if ( lastIdProductKluar ){
 
-                    listTotalKeluar.put(resultProduct.get(noProductKeluar).getIdProduct(),totalProductKeluar);
+                            listTotalKeluar.put(resultProduct.get(noProductKeluar).getIdProduct(),totalProductKeluar);
 
-                    lastIdProductKluar = false;
+                            lastIdProductKluar = false;
 
-                }
+                    }
 
-                noProductKeluar++;
+                    noProductKeluar++;
 
             }
 
@@ -140,19 +150,19 @@ public class ServiceInventoryReportImpl implements ServiceInventoryReport {
 
         for ( int k = 0; k < resultProduct.size(); k++ ){
 
-            int idProduct = resultProduct.get(k).getIdProduct();
+                int idProduct = resultProduct.get(k).getIdProduct();
 
-            if( listTotalKeluar.get( idProduct ) != null ){
+                if( listTotalKeluar.get( idProduct ) != null ){
 
-                resultProduct.get(k).setQtyPenjualan( listTotalKeluar.get( idProduct ) );
+                        resultProduct.get(k).setQtyPenjualan( listTotalKeluar.get(idProduct) );
 
-            }
+                }
 
-            if( listTotalMasuk.get( idProduct ) != null){
+                if( listTotalMasuk.get( idProduct ) != null){
 
-                resultProduct.get(k).setQtyProductMasuk( listTotalMasuk.get(idProduct) );
+                        resultProduct.get(k).setQtyProductMasuk( listTotalMasuk.get(idProduct) );
 
-            }
+                }
 
         }
 
@@ -160,6 +170,12 @@ public class ServiceInventoryReportImpl implements ServiceInventoryReport {
 
     }
 
+
+    /*
+     *
+     * @Fungsi - Fungsi Untuk Helper
+     *
+     */
     private ResponseInventoryReport toResponseInventoryReportSimpel( ModelProduct entity ){
 
         return new ResponseInventoryReport(

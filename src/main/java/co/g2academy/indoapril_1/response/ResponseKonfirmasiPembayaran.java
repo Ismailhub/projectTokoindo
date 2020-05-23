@@ -3,8 +3,8 @@ package co.g2academy.indoapril_1.response;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.sql.Blob;
 import java.util.Date;
+
 
 @Data
 @Builder

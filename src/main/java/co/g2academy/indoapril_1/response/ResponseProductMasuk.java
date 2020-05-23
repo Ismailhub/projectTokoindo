@@ -3,8 +3,8 @@ package co.g2academy.indoapril_1.response;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Date;
+
 
 @Data
 @Builder
@@ -15,6 +15,7 @@ public class ResponseProductMasuk {
     private Integer qtyMasuk;
     private Date tanggalMasuk;
     private Integer idProduct;
+
 
     public ResponseProductMasuk(
             Integer idProductMasuk,

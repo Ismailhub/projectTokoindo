@@ -1,7 +1,6 @@
 package co.g2academy.indoapril_1.service.impl;
 
 import co.g2academy.indoapril_1.model.ModelProduct;
-import co.g2academy.indoapril_1.model.ModelProductMasuk;
 import co.g2academy.indoapril_1.repository.RepositoryProduct;
 import co.g2academy.indoapril_1.repository.RepositoryProductMasuk;
 import co.g2academy.indoapril_1.repository.RepositorySupplier;
@@ -20,11 +19,9 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @AllArgsConstructor
@@ -40,6 +37,12 @@ public class ServiceProductImpl implements ServiceProduct {
     @Autowired
     private RepositoryProductMasuk repositoryProductMasuk;
 
+
+    /*
+     *
+     * @Fungsi Mendaftarkan Product Baru
+     *
+     */
     public boolean create( RequestProduct request ){
 
         boolean existsName = repository.existsByNamaProduct( request.getNamaProduct() );
@@ -48,17 +51,23 @@ public class ServiceProductImpl implements ServiceProduct {
 
         if ( !existsName && existsSupplier ){
 
-            repository.save( toEntity(request) );
+                repository.save( toEntity(request) );
 
-            return true;
+                return true;
 
         }else {
 
-            return false;
+                return false;
         }
 
     }
 
+
+    /*
+     *
+     * @Fungsi Untuk Upload Gambar Product
+     *
+     */
     public ResponseProduct saveGambar( Integer idProduct, MultipartFile file ) throws IOException, SQLException {
 
         ModelProduct dataProduct = repository.findByIdProduct(idProduct);
@@ -73,7 +82,109 @@ public class ServiceProductImpl implements ServiceProduct {
 
     }
 
-    private Blob toBlob(MultipartFile file) throws IOException, SQLException {
+
+    /*
+     *
+     * @Fungsi Untuk Menampilkan Semua Product
+     *
+     */
+    public List<ResponseProduct> getProducts(Integer page, Integer limit){
+
+        Pageable pageable = PageRequest.of(page,limit);
+
+        return repository.findAll( pageable ).stream().map( this::toResponseProductSimpel ).collect( Collectors.toList() );
+
+    }
+
+
+    /*
+     *
+     * @Fungsi Edit Product
+     *
+     */
+    public boolean edit( RequestProduct request ){
+
+        ModelProduct dataProduct = repository.findByIdProduct( request.getIdProduct() );
+
+        if ( dataProduct != null ){
+
+                Integer stockProduct = dataProduct.getQtyStock();
+
+                request.setQtyStock( stockProduct );
+
+                repository.save( toEntity(request) );
+
+                return true;
+
+        }else {
+
+                return false;
+
+        }
+    }
+
+
+    /*
+     *
+     * @Fungsi Untuk Menampilkan Product Yang Sudah Dibawah Minimum Stock
+     *
+     */
+    public List<ResponseProduct> getCekMinStock(){
+
+        return repository.findAll()
+                .stream()
+                .filter( data->data.getQtyStock() < data.getQtyMinStock())
+                .map( this::toResponseProductSimpel )
+                .collect( Collectors.toList() );
+
+    }
+
+
+    /*
+     *
+     * @Fungsi - Fungsi Untuk Helper
+     *
+     */
+
+    public boolean productIsExsistById(Integer idProduct){
+
+        return repository.existsById(idProduct);
+
+    }
+
+    private ResponseProduct toResponseProductSimpel( ModelProduct entity ) {
+
+        String imageBase64 = new String();
+
+        try {
+
+            imageBase64 = "data:image/png;base64, "+toBase64(entity.getGambar());
+
+        }catch ( Exception e ){
+
+            System.out.println(e);
+
+        }
+
+        return new ResponseProduct(
+                entity.getIdProduct(),
+                entity.getNamaProduct(),
+                entity.getMerek(),
+                entity.getQtyMinStock(),
+                entity.getQtyStock(),
+                entity.getHargaBeli(),
+                entity.getHargaJual(),
+                entity.getKategori(),
+                imageBase64,
+                entity.getUkuran(),
+                entity.getRasa(),
+                entity.getIsiPerkarton(),
+                entity.getDeskripsi(),
+                entity.getIdSupplier()
+        );
+    }
+
+    private Blob toBlob( MultipartFile file ) throws IOException, SQLException {
 
         byte[] bytes = file.getBytes();
 
@@ -123,80 +234,6 @@ public class ServiceProductImpl implements ServiceProduct {
                 .deskripsi( request.getDeskripsi() )
                 .idSupplier( request.getIdSupplier() )
                 .build();
-
-    }
-
-    public List<ResponseProduct> getProducts(Integer page, Integer limit){
-
-        Pageable pageable = PageRequest.of(page,limit);
-
-        return repository.findAll(pageable).stream().map(this::toResponseProductSimpel).collect(Collectors.toList());
-
-    }
-
-    private ResponseProduct toResponseProductSimpel( ModelProduct entity ) {
-
-        String imageBase64 = new String();
-
-        try {
-
-            imageBase64 = "data:image/png;base64, "+toBase64(entity.getGambar());
-
-        }catch (Exception e){
-
-            System.out.println(e);
-
-        }
-
-        return new ResponseProduct(
-                entity.getIdProduct(),
-                entity.getNamaProduct(),
-                entity.getMerek(),
-                entity.getQtyMinStock(),
-                entity.getQtyStock(),
-                entity.getHargaBeli(),
-                entity.getHargaJual(),
-                entity.getKategori(),
-                imageBase64,
-                entity.getUkuran(),
-                entity.getRasa(),
-                entity.getIsiPerkarton(),
-                entity.getDeskripsi(),
-                entity.getIdSupplier()
-        );
-    }
-
-    public boolean edit( RequestProduct request ){
-
-        ModelProduct dataProduct = repository.findByIdProduct( request.getIdProduct() );
-
-        if ( dataProduct != null ){
-
-            Integer stockProduct = dataProduct.getQtyStock();
-
-            request.setQtyStock( stockProduct );
-
-            repository.save( toEntity(request) );
-
-            return true;
-
-        }else {
-
-            return false;
-
-        }
-    }
-
-
-    public List<ResponseProduct> getCekMinStock(){
-
-        return repository.findAll().stream().filter(data -> data.getQtyStock() < data.getQtyMinStock()).map(this::toResponseProductSimpel).collect(Collectors.toList());
-
-    }
-
-    public boolean productIsExsistById(Integer idProduct){
-
-        return repository.existsById(idProduct);
 
     }
 

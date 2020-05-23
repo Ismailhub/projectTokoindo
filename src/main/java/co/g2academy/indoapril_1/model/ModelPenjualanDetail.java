@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -38,30 +39,5 @@ public class ModelPenjualanDetail implements Serializable {
     )
     @JoinColumn(name = "idProduct", insertable = false, updatable = false )
     private ModelProduct products;
-}
 
-////    private String Nama_Barang;
-//    @OneToOne(
-//            cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY,
-//            orphanRemoval = true
-//    )
-//    @JoinColumn(
-//            name = "idBarang",
-//            insertable=false,
-//            updatable=false
-//    )
-//    private ModelProduct barang;
-//
-////    private String Tgl_Order;
-//    @ManyToOne(
-//            fetch = FetchType.LAZY,
-//            optional = false
-//    )
-//    @JoinColumn(
-//            name = "Id_Order",
-//            insertable=false,
-//            updatable=false
-//    )
-//    private ModelPenjualan order;
-//
+}

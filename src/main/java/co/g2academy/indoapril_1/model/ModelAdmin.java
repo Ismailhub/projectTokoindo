@@ -29,6 +29,3 @@ public class ModelAdmin implements Serializable {
     private String token;
 
 }
-
-//    @OneToMany(mappedBy = "user")
-//    private List<ModelPenjualan> order;

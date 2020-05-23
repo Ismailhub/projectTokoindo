@@ -14,6 +14,4 @@ public interface RepositoryPenjualan extends JpaRepository<ModelPenjualan, Strin
 
     ModelPenjualan findByIdPenjualanAndGambarBuktiTransferNotNull(String idPenjualan);
 
-    ModelPenjualan findByIdPenjualan(String idPenjualan);
-
 }

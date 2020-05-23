@@ -10,6 +10,7 @@ public class BaseResponse <T> {
     private String message;
     private Boolean isLogin;
 
+
     public HttpStatus getCode(){ return code; }
 
     public String getStatus(){ return status; }
@@ -30,9 +31,8 @@ public class BaseResponse <T> {
         this.message = message;
     }
 
-    public void setLogin(Boolean login) {
+    public void setLogin( Boolean login ) {
         this.isLogin = login;
     }
 
 }
-

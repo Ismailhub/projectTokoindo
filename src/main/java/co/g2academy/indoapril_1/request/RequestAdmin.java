@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -30,7 +31,6 @@ public class RequestAdmin {
         this.password = password;
 
     }
-
 
     public Integer getIdAdmin() {
         return idAdmin;

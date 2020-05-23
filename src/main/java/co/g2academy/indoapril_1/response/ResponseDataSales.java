@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -13,6 +14,7 @@ public class ResponseDataSales {
     private Integer idCustomer;
     private Integer totalBayar;
     private Integer keuntungan;
+
 
     public ResponseDataSales(
             String idPenjualan,
@@ -25,7 +27,6 @@ public class ResponseDataSales {
         this.totalBayar = totalBayar;
         this.keuntungan = keuntungan;
     }
-
 
     public void setKeuntungan( Integer keuntungan ) {
 

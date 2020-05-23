@@ -6,15 +6,21 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import javax.xml.bind.DatatypeConverter;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 
 @Service
 @AllArgsConstructor
 @Repository("ServiceMD5")
 public class ServiceMD5Impl implements ServiceMD5 {
 
+
+    /*
+     *
+     * @Untuk cek Password
+     *
+     */
     @Override
     @Transactional
     public boolean checkPassword( String password, String hash ) throws NoSuchAlgorithmException {
@@ -23,6 +29,12 @@ public class ServiceMD5Impl implements ServiceMD5 {
 
     }
 
+
+    /*
+     *
+     * @Untuk Hash Password
+     *
+     */
     @Override
     public String hashPassword( String password ) throws NoSuchAlgorithmException {
 
@@ -30,6 +42,12 @@ public class ServiceMD5Impl implements ServiceMD5 {
 
     }
 
+
+    /*
+     *
+     * @Fungsi - Fungsi Untuk Helper
+     *
+     */
     private String hashText( String password ) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -43,4 +61,5 @@ public class ServiceMD5Impl implements ServiceMD5 {
         return myHash;
 
     }
+
 }

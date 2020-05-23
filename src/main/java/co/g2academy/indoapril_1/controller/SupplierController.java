@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("supplier")
@@ -21,47 +22,83 @@ public class SupplierController {
     @Autowired
     ServiceAdmin autentikasi;
 
-    // untuk menampilkan semua supplier
+
+    /*
+     *
+     * @Untuk Menampilkan Semua Supplier
+     *
+     */
     @GetMapping("/getSuppliers")
-    public ResponseEntity<BaseResponse> getSuppliers(@RequestParam(defaultValue = "0")Integer page,
-                                                     @RequestParam(defaultValue = "100")Integer limit,
-                                                     @RequestHeader(required = false) String token
+    public ResponseEntity<BaseResponse> getSuppliers( @RequestParam(defaultValue = "0")Integer page,
+                                                      @RequestParam(defaultValue = "100")Integer limit,
+                                                      @RequestHeader(required = false) String token
     ){
 
         // cek token
         if ( autentikasi.Autentication(token) ){
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        null,
+                        "Harus Login"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
-        BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getSupplierList(page, limit), "All Supplier");
+        BaseResponse baseResponse = new BaseResponse(
+                HttpStatus.OK,
+                "OK",
+                service.getSupplierList( page, limit ),
+                "All Supplier"
+        );
 
         return new ResponseEntity<>( baseResponse, HttpStatus.OK );
 
     }
 
-    // belum selesai
+
+    /*
+     *
+     * @Untuk Menampilkan Supplier dan Productnya
+     *
+     */
     @GetMapping("/getSuppliersAndProduct")
-    public ResponseEntity<BaseResponse> getSuppliersAndProduct(@RequestHeader(required = false) String token){
+    public ResponseEntity<BaseResponse> getSuppliersAndProduct( @RequestHeader(required = false) String token){
 
         // cek token
-        if ( autentikasi.Autentication(token) ){
+        if ( autentikasi.Autentication( token ) ){
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        null,
+                        "Harus Login"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
-        BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getSupplierAndProductList(), "All Supplier & Produknya");
+        BaseResponse baseResponse = new BaseResponse(
+                HttpStatus.OK,
+                "OK",
+                service.getSupplierAndProductList(),
+                "All Supplier & Produknya"
+        );
 
-        return new ResponseEntity<>( baseResponse,HttpStatus.OK );
+        return new ResponseEntity<>( baseResponse, HttpStatus.OK );
 
     }
 
+
+    /*
+     *
+     * @Untuk Menambah Supplier Baru
+     *
+     */
     @PostMapping(
             value = "/addSupplier",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -71,15 +108,21 @@ public class SupplierController {
     ){
 
         // cek token
-        if ( autentikasi.Autentication(token) ){
+        if ( autentikasi.Autentication( token ) ){
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        request,
+                        "Harus Login"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
-        if ( request.getIdSupplier() != null
+        if (
+                request.getIdSupplier() != null
                 || request.getNamaSupplier() == null
                 && request.getAlamatSupplier() == null
                 && request.getTelepon() == null
@@ -88,28 +131,49 @@ public class SupplierController {
                 && request.getTelepon() == ""
         ){
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.BAD_REQUEST, "Gagal", request , " data tidak valid ");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Gagal",
+                        request ,
+                        " data tidak valid "
+                );
 
-            return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
+                return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
         }
 
-        if( service.create(request) ){
+        if( service.create( request ) ){
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", request, "Sukses add supplier");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.OK,
+                        "OK",
+                        request,
+                        "Sukses add supplier"
+                );
 
-            return new ResponseEntity<>( baseResponse, HttpStatus.OK );
+                return new ResponseEntity<>( baseResponse, HttpStatus.OK );
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.BAD_REQUEST, "Gagal", request, "data sudah ada");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Gagal",
+                        request,
+                        "data sudah ada"
+                );
 
-            return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
+                return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
         }
 
     }
 
+
+    /*
+     *
+     * @Untuk Merubah Data Supplier
+     *
+     */
     @PostMapping(
             value = "/editSupplier",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -119,15 +183,21 @@ public class SupplierController {
     ){
 
         // cek token
-        if ( autentikasi.Autentication(token) ){
+        if ( autentikasi.Autentication( token ) ){
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        request,
+                        "Harus Login"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
-        if ( request.getIdSupplier() == null
+        if (
+                request.getIdSupplier() == null
                 && request.getNamaSupplier() == null
                 && request.getAlamatSupplier() == null
                 && request.getTelepon() == null
@@ -136,23 +206,39 @@ public class SupplierController {
                 && request.getTelepon() == ""
         ){
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.BAD_REQUEST, "Gagal", request , " data tidak valid ");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Gagal",
+                        request ,
+                        " data tidak valid "
+                );
 
-            return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
+                return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
         }
 
-        if ( service.edit(request) ){
+        if ( service.edit( request ) ){
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", request , "Sukses edit supplier");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.OK,
+                        "OK",
+                        request,
+                        "Sukses edit supplier"
+                );
 
-            return new ResponseEntity<>( baseResponse, HttpStatus.OK );
+                return new ResponseEntity<>( baseResponse, HttpStatus.OK );
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.BAD_REQUEST, "Gagal", request , "id supplier tidak ada");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Gagal",
+                        request ,
+                        "id supplier tidak ada"
+                );
 
-            return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
+                return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
+
         }
 
     }

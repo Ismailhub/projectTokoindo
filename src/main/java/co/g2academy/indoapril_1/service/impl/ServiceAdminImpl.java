@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
+
 
 @Service
 @AllArgsConstructor
@@ -30,45 +30,146 @@ public class ServiceAdminImpl implements ServiceAdmin {
     @Autowired
     private ServiceMD5 serviceMD5;
 
-    //Login by user name and password
+
+    /*
+     *
+     * @Untuk Login
+     *
+     */
     @Override
     @Transactional
-    public BaseResponse loginByEmail(LoginRequest request) throws NoSuchAlgorithmException {
+    public BaseResponse loginByEmail( LoginRequest request ) throws NoSuchAlgorithmException {
 
         ModelAdmin entity = repository.getOneByEmail( request.getEmail() );
+
+        if ( entity == null ) {
+
+                return new  BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "FAILED",
+                        null,
+                        "USERNAME SALAH!"
+                );
+
+        }
 
         String status = entity.getStatus();
 
         if ( status.equals("nonaktif") ){
 
-            return new  BaseResponse(HttpStatus.FORBIDDEN, "FAILED", request, "akun nonaktif!");
+                return new  BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "FAILED",
+                        request,
+                        "akun nonaktif!"
+                );
 
         }
 
-        if ( entity == null ) {
+        if( serviceMD5.checkPassword( request.getPassword(), entity.getPassword() ) ){
 
-            return new  BaseResponse(HttpStatus.FORBIDDEN, "FAILED", null, "USERNAME SALAH!");
+                UUID uuid = UUID.randomUUID();
 
-        }
+                //masukan token ke ModelAdmin
+                entity.setToken( String.valueOf(uuid) );
 
-        if( serviceMD5.checkPassword(request.getPassword(),entity.getPassword()) ){
+                ModelAdmin savedEntyty = repository.save( entity );
 
-            UUID uuid = UUID.randomUUID();
-
-            //masukan token ke ModelAdmin
-            entity.setToken(String.valueOf(uuid));
-
-            ModelAdmin savedEntyty = repository.save(entity);
-
-            return new BaseResponse(HttpStatus.OK, "Succes", toLoginResponseSimple(savedEntyty), "Succes");
+                return new BaseResponse(
+                        HttpStatus.OK,
+                        "Succes",
+                        toLoginResponseSimple( savedEntyty ),
+                        "Succes"
+                );
 
         } else{
 
-            return new BaseResponse(HttpStatus.FORBIDDEN, "FAILED", null, "PASSWORD SALAH!");
+                return new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "FAILED",
+                        null,
+                        "PASSWORD SALAH!"
+                );
 
         }
 
     }
+
+
+    /*
+     *
+     * @Untuk Membuat Admin
+     *
+     */
+    @Override
+    @Transactional
+    public boolean creat( RequestAdmin request ) throws NoSuchAlgorithmException {
+
+        if ( !repository.existsByEmail( request.getEmail() ) ){
+
+                String hashPassword = serviceMD5.hashPassword( request.getPassword() );
+
+                request.setPassword( hashPassword );
+
+                repository.save( toEntity(request) );
+
+                return true;
+
+        }else {
+
+                return false;
+
+        }
+
+    }
+
+
+    /*
+     *
+     * @Untuk Edit Data Admin
+     *
+     */
+    @Override
+    @Transactional
+    public boolean edit( RequestAdmin request ) throws NoSuchAlgorithmException {
+
+        if ( repository.existsById( request.getIdAdmin()) ){
+
+                String hashPassword = serviceMD5.hashPassword( request.getPassword() );
+
+                request.setPassword( hashPassword );
+
+                repository.save( toEntity(request) );
+
+                return true;
+
+        }else {
+
+                return false;
+
+        }
+
+    }
+
+
+    /*
+     *
+     * @Untuk Mengecek Token
+     *
+     */
+    @Override
+    public boolean Autentication( String token ){
+
+        return repository.existsByToken( token );
+
+    }
+
+
+    /*
+     *
+     * @Fungsi - Fungsi Untuk Helper
+     *
+     */
 
     private ResponseAdmin toLoginResponseSimple( ModelAdmin entity ) {
 
@@ -79,28 +180,6 @@ public class ServiceAdminImpl implements ServiceAdmin {
                 entity.getTelephon(),
                 entity.getStatus(),
                 entity.getToken());
-    }
-
-    @Override
-    @Transactional
-    public boolean creat( RequestAdmin request ) throws NoSuchAlgorithmException {
-
-        if ( !repository.existsByEmail(request.getEmail()) ){
-
-            String hashPassword = serviceMD5.hashPassword( request.getPassword() );
-
-            request.setPassword( hashPassword );
-
-            repository.save( toEntity(request) );
-
-            return true;
-
-        }else {
-
-            return false;
-
-        }
-
     }
 
     private ModelAdmin toEntity( RequestAdmin request ){
@@ -116,33 +195,4 @@ public class ServiceAdminImpl implements ServiceAdmin {
                 .build();
     }
 
-
-    @Override
-    @Transactional
-    public boolean edit( RequestAdmin request ) throws NoSuchAlgorithmException {
-
-        if ( repository.existsById( request.getIdAdmin()) ){
-
-            String hashPassword = serviceMD5.hashPassword( request.getPassword() );
-
-            request.setPassword( hashPassword );
-
-            repository.save( toEntity(request) );
-
-            return true;
-
-        }else {
-
-            return false;
-
-        }
-
-    }
-
-    @Override
-    public boolean Autentication( String token ){
-
-        return repository.existsByToken(token);
-
-    }
 }

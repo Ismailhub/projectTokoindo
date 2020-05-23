@@ -1,7 +1,6 @@
 package co.g2academy.indoapril_1.response;
 
 import lombok.Data;
-
 import java.util.Date;
 
 @Data

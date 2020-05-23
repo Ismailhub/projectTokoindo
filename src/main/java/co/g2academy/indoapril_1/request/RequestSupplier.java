@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 
 @Data
 @Builder
@@ -21,6 +21,7 @@ public class RequestSupplier {
     private String namaSupplier;
     private String alamatSupplier;
     private String telepon;
+
 
     public Integer getIdSupplier() {
         return idSupplier;

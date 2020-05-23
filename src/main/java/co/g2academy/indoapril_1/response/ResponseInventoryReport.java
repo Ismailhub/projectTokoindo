@@ -18,6 +18,7 @@ public class ResponseInventoryReport {
     private Integer qtyPenjualan;
     private Integer qtyMinStock;
 
+
     public ResponseInventoryReport(
             int idProduct,
             String namaProduct,

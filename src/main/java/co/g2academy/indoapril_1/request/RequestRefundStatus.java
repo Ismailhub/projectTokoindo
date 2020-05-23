@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -13,6 +14,7 @@ public class RequestRefundStatus {
 
     private String idPenjualan;
     private String statusRefundDisetujui;
+
 
     public String getIdPenjualan() {
         return idPenjualan;

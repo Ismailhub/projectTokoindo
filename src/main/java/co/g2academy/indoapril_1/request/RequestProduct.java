@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 
 @Data
 @Builder
@@ -31,6 +31,7 @@ public class RequestProduct {
     private String isiPerkarton;
     private String deskripsi;
     private Integer idSupplier;
+
 
     public Integer getIdProduct() {
         return idProduct;

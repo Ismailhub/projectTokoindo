@@ -19,7 +19,12 @@ public class AdminController {
     @Autowired
     ServiceAdmin service;
 
-    //POST LOGIN
+
+    /*
+    *
+    * @Untuk Login Admin
+    *
+    */
     @PostMapping(
             value = "/",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -32,7 +37,12 @@ public class AdminController {
         System.out.println(email);
         System.out.println(password);
 
-        if ( request.getEmail() != null && request.getPassword() != null || request.getEmail() == "" && request.getPassword() == "" ){
+        if (
+                request.getEmail() != null
+                && request.getPassword() != null
+                || request.getEmail() == ""
+                && request.getPassword() == ""
+        ){
 
             BaseResponse baseResponse = service.loginByEmail( request );
 
@@ -40,7 +50,12 @@ public class AdminController {
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST, "FAILED", request, "Username & Password Tidak Boleh Null");
+            BaseResponse baseResponse = new BaseResponse(
+                    HttpStatus.BAD_REQUEST,
+                    "FAILED",
+                    request,
+                    "Username & Password Tidak Boleh Null"
+            );
 
             return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
@@ -49,13 +64,19 @@ public class AdminController {
     }
 
 
+    /*
+     *
+     * @Untuk Tambah Data Admin
+     *
+     */
     @PostMapping(
             value = "/addAdmin",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> addAdmin( @RequestBody RequestAdmin request ) throws NoSuchAlgorithmException {
 
-        if ( request.getEmail() != null
+        if (
+                request.getEmail() != null
                 && request.getPassword() != null
                 && request.getNamaAdmin() != null
                 && request.getTelephon() != null
@@ -67,30 +88,51 @@ public class AdminController {
 
             if ( service.creat( request ) ){
 
-                BaseResponse baseResponse = new BaseResponse( HttpStatus.OK, "Berhasil", request, "Tambah Admin Berhasil");
+                    BaseResponse baseResponse = new BaseResponse(
+                            HttpStatus.OK,
+                            "Berhasil",
+                            request,
+                            "Tambah Admin Berhasil"
+                    );
 
-                request.setPassword("");
+                    request.setPassword("");
 
-                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                    return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
             }else {
 
-                BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST, "Gagal", request, "Email sudah terdaftar");
+                    BaseResponse baseResponse = new BaseResponse(
+                            HttpStatus.BAD_REQUEST,
+                            "Gagal",
+                            request,
+                            "Email sudah terdaftar"
+                    );
 
-                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                    return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
             }
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST, "Gagal", request, "Data tidak lengkap");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Gagal",
+                        request,
+                        "Data tidak lengkap"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
     }
 
+
+    /*
+     *
+     * @Untuk Edit Admin
+     *
+     */
     @PostMapping(
             value = "/editAdmin",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -102,13 +144,19 @@ public class AdminController {
         // cek token
         if ( service.Autentication(token) ){
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        request,
+                        "Harus Login"
+                );
 
             return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
-        if ( request.getIdAdmin() != null
+        if (
+                request.getIdAdmin() != null
                 && request.getEmail() != null
                 && request.getPassword() != null
                 && request.getNamaAdmin() != null
@@ -121,25 +169,40 @@ public class AdminController {
 
             if ( service.edit( request ) ){
 
-                BaseResponse baseResponse = new BaseResponse( HttpStatus.OK, "Berhasil", request, "Edit Admin Berhasil");
+                    BaseResponse baseResponse = new BaseResponse(
+                            HttpStatus.OK,
+                            "Berhasil",
+                            request,
+                            "Edit Admin Berhasil"
+                    );
 
-                request.setPassword(null);
+                    request.setPassword(null);
 
-                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                    return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
             }else {
 
-                BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST, "Gagal", request, "Tidak ada user dengan id ="+request.getIdAdmin());
+                    BaseResponse baseResponse = new BaseResponse(
+                            HttpStatus.BAD_REQUEST,
+                            "Gagal",
+                            request,
+                            "Tidak ada user dengan id ="+request.getIdAdmin()
+                    );
 
-                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                    return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
             }
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST, "Gagal", request, "Data tidak lengkap");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Gagal",
+                        request,
+                        "Data tidak lengkap"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 

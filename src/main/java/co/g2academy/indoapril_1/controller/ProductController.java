@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @CrossOrigin( origins = "*", allowedHeaders = "*" )
 @Configuration
 @RestController
@@ -24,6 +25,12 @@ public class ProductController {
     @Autowired
     ServiceAdmin autentikasi;
 
+
+    /*
+     *
+     * @Untuk Menambah Produck Baru
+     *
+     */
     @PostMapping(
             value = "/addProduct",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -33,15 +40,21 @@ public class ProductController {
     ){
 
         // cek token
-        if ( autentikasi.Autentication(token) ){
+        if ( autentikasi.Autentication( token ) ){
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        request,
+                        "Harus Login"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
-        if ( request.getQtyMinStock() > 0
+        if (
+                request.getQtyMinStock() > 0
                 && request.getQtyStock() == 0
                 && request.getHargaBeli() > 0
                 && request.getHargaJual() > 0
@@ -64,45 +77,70 @@ public class ProductController {
 
             if( service.create( request ) ){
 
-                BaseResponse baseResponse = new BaseResponse( HttpStatus.OK,"Ok",request,"Berhasil Tambah Produck" );
+                    BaseResponse baseResponse = new BaseResponse(
+                            HttpStatus.OK,
+                            "Ok",
+                            request,
+                            "Berhasil Tambah Produck"
+                    );
 
-                return new ResponseEntity<>( baseResponse,HttpStatus.OK );
+                    return new ResponseEntity<>( baseResponse, HttpStatus.OK );
 
             }else {
 
-                BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal",request,"Gagal Tambah Produck" );
+                    BaseResponse baseResponse = new BaseResponse(
+                            HttpStatus.BAD_REQUEST,
+                            "Gagal",
+                            request,
+                            "Gagal Tambah Produck"
+                    );
 
-                return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
+                    return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
             }
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal",request,"Gagal Tambah Produck" );
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Gagal",
+                        request,
+                        "Gagal Tambah Produck"
+                );
 
-            return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
+                return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
         }
 
     }
 
 
+    /*
+     *
+     * @Untuk Upload Gambar Product
+     *
+     */
     @RequestMapping(
             value = "/uploadGambar/{idProduct}",
             method = RequestMethod.POST,
             consumes = {"multipart/form-data"}
     )
-    public ResponseEntity<BaseResponse> uploadGambar(@PathVariable Integer idProduct,
-                                                     @RequestParam(value = "file") MultipartFile file,
-                                                     @RequestHeader(required = false) String token
-                                                     ){
+    public ResponseEntity<BaseResponse> uploadGambar( @PathVariable Integer idProduct,
+                                                      @RequestParam(value = "file") MultipartFile file,
+                                                      @RequestHeader(required = false) String token
+    ){
 
         // cek token
-        if ( autentikasi.Autentication(token) ){
+        if ( autentikasi.Autentication( token ) ){
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        null,
+                        "Harus Login"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
@@ -111,42 +149,71 @@ public class ProductController {
         System.out.println(file.getContentType());
 
         if ( !file.isEmpty() ){
+
             try {
 
-                if ( service.productIsExsistById(idProduct) ){
+                if ( service.productIsExsistById( idProduct ) ){
 
-                    BaseResponse baseResponse = new BaseResponse( HttpStatus.OK,"Ok",service.saveGambar(idProduct, file),"berhasil upload gambar product" );
+                        BaseResponse baseResponse = new BaseResponse(
+                                HttpStatus.OK,
+                                "Ok",
+                                service.saveGambar(
+                                        idProduct,
+                                        file
+                                ),
+                                "berhasil upload gambar product"
+                        );
 
-                    return new ResponseEntity<>( baseResponse,HttpStatus.OK );
+                        return new ResponseEntity<>( baseResponse, HttpStatus.OK );
 
                 }else {
 
-                    BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal",null,"Product tidak ditemukan" );
+                        BaseResponse baseResponse = new BaseResponse(
+                                HttpStatus.BAD_REQUEST,
+                                "Gagal",
+                                null,
+                                "Product tidak ditemukan"
+                        );
 
-                    return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
+                        return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
                 }
 
-            }catch (Exception e){
+            }catch ( Exception e ){
 
-                System.out.println(e);
+                    System.out.println(e);
 
-                BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal Upload",null,"Gagal upload gambar Produck" );
+                    BaseResponse baseResponse = new BaseResponse(
+                            HttpStatus.BAD_REQUEST,
+                            "Gagal Upload",
+                            null,
+                            "Gagal upload gambar Produck"
+                    );
 
-                return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
+                    return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
             }
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal Upload","Gagal","File Kosong" );
+            BaseResponse baseResponse = new BaseResponse(
+                    HttpStatus.BAD_REQUEST,
+                    "Gagal Upload",
+                    null,
+                    "File Kosong"
+            );
 
-            return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
+            return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
         }
     }
 
 
+    /*
+     *
+     * @Untuk Mengubah Data Product
+     *
+     */
     @PostMapping(
             value = "/editProduct",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -156,15 +223,21 @@ public class ProductController {
     ){
 
         // cek token
-        if ( autentikasi.Autentication(token) ){
+        if ( autentikasi.Autentication( token ) ){
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        request,
+                        "Harus Login"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
-        if ( request.getQtyMinStock() > 0
+        if (
+                request.getQtyMinStock() > 0
                 && request.getHargaBeli() > 0
                 && request.getHargaJual() > 0
                 && request.getNamaProduct() != null
@@ -186,65 +259,110 @@ public class ProductController {
 
             if( service.edit( request ) ){
 
-                BaseResponse baseResponse = new BaseResponse( HttpStatus.OK,"Ok",request,"Berhasil edit product" );
+                    BaseResponse baseResponse = new BaseResponse(
+                            HttpStatus.OK,
+                            "Ok",
+                            request,
+                            "Berhasil edit product"
+                    );
 
-                return new ResponseEntity<>( baseResponse,HttpStatus.OK );
+                    return new ResponseEntity<>( baseResponse, HttpStatus.OK );
 
             }else {
 
-                BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal",request,"id product tidak ditemukan" );
+                    BaseResponse baseResponse = new BaseResponse(
+                            HttpStatus.BAD_REQUEST,
+                            "Gagal",
+                            request,
+                            "id product tidak ditemukan"
+                    );
 
-                return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
+                    return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
             }
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.BAD_REQUEST,"Gagal",request,"Gagal edit product" );
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Gagal",
+                        request,
+                        "Gagal edit product"
+                );
 
-            return new ResponseEntity<>( baseResponse,HttpStatus.BAD_REQUEST );
+                return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
         }
 
     }
 
 
+    /*
+     *
+     * @Untuk Menampilkan Seluruh Product
+     *
+     */
     @GetMapping("/getProducts")
-    public ResponseEntity<BaseResponse> getProducts(@RequestParam(defaultValue = "0")Integer page,
-                                                    @RequestParam(defaultValue = "100")Integer limit,
-                                                    @RequestHeader(required = false) String token
-                                                    ){
+    public ResponseEntity<BaseResponse> getProducts( @RequestParam(defaultValue = "0")Integer page,
+                                                     @RequestParam(defaultValue = "100")Integer limit,
+                                                     @RequestHeader(required = false) String token
+    ){
 
         // cek token
-        if ( autentikasi.Autentication(token) ){
+        if ( autentikasi.Autentication( token ) ){
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        null,
+                        "Harus Login"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
-        BaseResponse baseResponse = new BaseResponse( HttpStatus.OK,"Ok",service.getProducts(page,limit),"List Product" );
+        BaseResponse baseResponse = new BaseResponse(
+                HttpStatus.OK,
+                "Ok",
+                service.getProducts( page, limit ),
+                "List Product"
+        );
 
-        return new ResponseEntity<>(baseResponse,HttpStatus.OK);
+        return new ResponseEntity<>( baseResponse, HttpStatus.OK );
 
     }
 
 
+    /*
+     *
+     * @Untuk Melihat Product Yang Sudah Dibawah Minimum Stock
+     *
+     */
     @GetMapping("/cekMinimumStock")
-    public ResponseEntity<BaseResponse> cekMinimumStock(@RequestHeader(required = false) String token){
+    public ResponseEntity<BaseResponse> cekMinimumStock( @RequestHeader(required = false) String token ){
 
         // cek token
-        if ( autentikasi.Autentication(token) ){
+        if ( autentikasi.Autentication( token ) ){
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        null,
+                        "Harus Login"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
-        BaseResponse baseResponse = new BaseResponse( HttpStatus.OK,"Ok",service.getCekMinStock(),"Cek Minimum Stock" );
+        BaseResponse baseResponse = new BaseResponse(
+                HttpStatus.OK,
+                "Ok",
+                service.getCekMinStock(),
+                "Cek Minimum Stock"
+        );
 
-        return new ResponseEntity<>( baseResponse,HttpStatus.OK );
+        return new ResponseEntity<>( baseResponse, HttpStatus.OK );
 
     }
 

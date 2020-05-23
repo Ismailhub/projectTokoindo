@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
 
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -15,6 +16,7 @@ public class RequestTanggal {
     private Date tgl;
     private Date tglAkhir;
 
+
     public Date getTgl() {
         return this.tgl;
     }
@@ -23,4 +25,5 @@ public class RequestTanggal {
 
         return this.tglAkhir;
     }
+
 }

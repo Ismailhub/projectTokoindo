@@ -18,6 +18,7 @@ public class ResponseSupplierAndProducts {
     private Integer hargaBeli;
     private Integer hargaJual;
 
+
     public ResponseSupplierAndProducts(
             Integer idSupplier,
             String namaSupplier,

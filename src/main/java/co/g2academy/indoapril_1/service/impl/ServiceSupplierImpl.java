@@ -26,7 +26,12 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 
     private RepositoryProduct repProduct;
 
-    // menampilkan semua supplier
+
+    /*
+     *
+     * @Fungsi Menampilkan Semua Supplier
+     *
+     */
     @Override
     public List<ResponseSupplier> getSupplierList(Integer page, Integer limit){
 
@@ -39,18 +44,12 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 
     }
 
-    private ResponseSupplier toResponseSupplierSimpel( ModelSupplier entity ){
 
-        return new ResponseSupplier(
-                entity.getIdSupplier(),
-                entity.getNamaSupplier(),
-                entity.getAlamatSupplier(),
-                entity.getTelepon()
-        );
-    }
-
-
-    // menambah data supplier
+    /*
+     *
+     * @Fungsi Untuk Menambah Data Supplier
+     *
+     */
     @Override
     @Transactional
     public boolean create( RequestSupplier request ){
@@ -59,32 +58,26 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 
         if( !dataExists ){
 
-            ModelSupplier entity = toEntity( request );
+                ModelSupplier entity = toEntity( request );
 
-            ModelSupplier saveEntity = repository.save( entity );
+                ModelSupplier saveEntity = repository.save( entity );
 
-            return true;
+                return true;
 
         }else {
 
-            return false;
+                return false;
 
         }
 
     }
 
-    private ModelSupplier toEntity( RequestSupplier request ){
 
-        return ModelSupplier
-                .builder()
-                .idSupplier( request.getIdSupplier() )
-                .namaSupplier( request.getNamaSupplier() )
-                .alamatSupplier( request.getAlamatSupplier() )
-                .telepon( request.getTelepon() )
-                .build();
-    }
-
-
+    /*
+     *
+     * @Fungsi Mengubah Data Supplier
+     *
+     */
     @Override
     @Transactional
     public boolean edit( RequestSupplier request ){
@@ -105,7 +98,11 @@ public class ServiceSupplierImpl implements ServiceSupplier {
 
 
 
-    // menampilkan supplier dan barangnya
+    /*
+     *
+     * @Fungsi Menampilkan List Barang dan Suppliernya
+     *
+     */
     @Override
     public List<ResponseSupplierAndProducts> getSupplierAndProductList(){
 
@@ -115,6 +112,13 @@ public class ServiceSupplierImpl implements ServiceSupplier {
                 .collect( Collectors.toList() );
 
     }
+
+
+    /*
+     *
+     * @Fungsi Untuk Helper
+     *
+     */
 
     private ResponseSupplierAndProducts toResponseSupplierAndProductSimpel( ModelProduct entity ){
 
@@ -130,6 +134,27 @@ public class ServiceSupplierImpl implements ServiceSupplier {
                 entity.getHargaJual()
         );
 
+    }
+
+    private ResponseSupplier toResponseSupplierSimpel( ModelSupplier entity ){
+
+        return new ResponseSupplier(
+                entity.getIdSupplier(),
+                entity.getNamaSupplier(),
+                entity.getAlamatSupplier(),
+                entity.getTelepon()
+        );
+    }
+
+    private ModelSupplier toEntity( RequestSupplier request ){
+
+        return ModelSupplier
+                .builder()
+                .idSupplier( request.getIdSupplier() )
+                .namaSupplier( request.getNamaSupplier() )
+                .alamatSupplier( request.getAlamatSupplier() )
+                .telepon( request.getTelepon() )
+                .build();
     }
 
 }

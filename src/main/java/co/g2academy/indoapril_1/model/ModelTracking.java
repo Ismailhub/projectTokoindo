@@ -1,7 +1,5 @@
 package co.g2academy.indoapril_1.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
 
 @Data
 @Builder
@@ -23,6 +22,7 @@ public class ModelTracking implements Serializable {
     private Integer no;
     private String status;
     private Date tanggal;
+
 
     private String idPenjualan;
     @ManyToOne(

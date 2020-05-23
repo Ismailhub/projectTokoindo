@@ -23,25 +23,40 @@ public class ProductMasukController {
     ServiceAdmin autentikasi;
 
     @GetMapping("/getProductMasuk")
-    public ResponseEntity<BaseResponse> getProductMasuk(@RequestHeader(required = false) String token){
+    public ResponseEntity<BaseResponse> getProductMasuk( @RequestHeader(required = false) String token ){
 
         // cek token
-//        if ( autentikasi.Autentication(token) ){
-//
-//            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
-//
-//            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
-//
-//        }
+        if ( autentikasi.Autentication( token ) ){
+
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        null,
+                        "Harus Login"
+                );
+
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+
+        }
 
 
-        BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getProductMasukList(), "Sukses");
+        BaseResponse baseResponse = new BaseResponse(
+                HttpStatus.OK,
+                "OK",
+                service.getProductMasukList(),
+                "Sukses"
+        );
 
         return new ResponseEntity<>( baseResponse, HttpStatus.OK );
 
     }
 
 
+    /*
+     *
+     * @Untuk Menambah Stock Product
+     *
+     */
     @PostMapping(
             value = "/addProductStock",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -51,11 +66,16 @@ public class ProductMasukController {
     ) {
 
         // cek token
-        if ( autentikasi.Autentication(token) ){
+        if ( autentikasi.Autentication( token ) ){
 
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.FORBIDDEN,
+                        "Ditolak",
+                        request,
+                        "Harus Login"
+                );
 
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+                return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
 
         }
 
@@ -74,17 +94,27 @@ public class ProductMasukController {
 
         if ( validNamaBarang && validQty ){
 
-            service.create( request );
+                service.create( request );
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", "Berhasil Menambah Stock", "Sukses");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.OK,
+                        "OK",
+                        null,
+                        "Berhasil Menambah Stock Product"
+                );
 
-            return new ResponseEntity<>( baseResponse, HttpStatus.CREATED );
+                return new ResponseEntity<>( baseResponse, HttpStatus.CREATED );
 
         }else {
 
-            BaseResponse baseResponse = new BaseResponse(HttpStatus.BAD_REQUEST, "Failed", request, "Qtt Input Minimal 1 & ID Barang Harus Sudah Terdaftar");
+                BaseResponse baseResponse = new BaseResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Failed",
+                        request,
+                        "Qtt Input Minimal 1 & ID Barang Harus Sudah Terdaftar"
+                );
 
-            return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>( baseResponse, HttpStatus.BAD_REQUEST );
 
         }
 
