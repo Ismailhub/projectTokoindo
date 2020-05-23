@@ -30,7 +30,7 @@ public class InventoryReportController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> getInventoryReport( @RequestBody RequestTanggal request,
-                                                            @RequestHeader String token
+                                                            @RequestHeader(required = false) String token
     ){
 
         // cek token

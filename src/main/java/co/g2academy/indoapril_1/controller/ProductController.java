@@ -29,7 +29,7 @@ public class ProductController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> addProduct( @RequestBody RequestProduct request,
-                                                    @RequestHeader String token
+                                                    @RequestHeader(required = false) String token
     ){
 
         // cek token
@@ -94,7 +94,7 @@ public class ProductController {
     )
     public ResponseEntity<BaseResponse> uploadGambar(@PathVariable Integer idProduct,
                                                      @RequestParam(value = "file") MultipartFile file,
-                                                     @RequestHeader String token
+                                                     @RequestHeader(required = false) String token
                                                      ){
 
         // cek token
@@ -152,7 +152,7 @@ public class ProductController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> editProduct( @RequestBody RequestProduct request,
-                                                     @RequestHeader String token
+                                                     @RequestHeader(required = false) String token
     ){
 
         // cek token
@@ -211,7 +211,7 @@ public class ProductController {
     @GetMapping("/getProducts")
     public ResponseEntity<BaseResponse> getProducts(@RequestParam(defaultValue = "0")Integer page,
                                                     @RequestParam(defaultValue = "100")Integer limit,
-                                                    @RequestHeader String token
+                                                    @RequestHeader(required = false) String token
                                                     ){
 
         // cek token
@@ -231,7 +231,7 @@ public class ProductController {
 
 
     @GetMapping("/cekMinimumStock")
-    public ResponseEntity<BaseResponse> cekMinimumStock(@RequestHeader String token){
+    public ResponseEntity<BaseResponse> cekMinimumStock(@RequestHeader(required = false) String token){
 
         // cek token
         if ( autentikasi.Autentication(token) ){

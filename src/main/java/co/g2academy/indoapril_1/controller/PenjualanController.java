@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Date;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -37,7 +36,7 @@ public class PenjualanController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> getPenjualan( @RequestBody RequestTanggal request,
-                                                      @RequestHeader String token
+                                                      @RequestHeader(required = false) String token
     ){
 
         // cek token
@@ -78,7 +77,7 @@ public class PenjualanController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> getDataSales( @RequestBody RequestTanggal request,
-                                                      @RequestHeader String token
+                                                      @RequestHeader(required = false) String token
     ){
 
         // cek token
@@ -114,16 +113,16 @@ public class PenjualanController {
     }
 
     @GetMapping("/getStatusTransaksi")
-    public ResponseEntity<BaseResponse> getStatusTransaksi( @RequestHeader String token ){
+    public ResponseEntity<BaseResponse> getStatusTransaksi( @RequestHeader(required = false) String token ){
 
         // cek token
-        if ( autentikasi.Autentication(token) ){
-
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
-
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
-
-        }
+//        if ( autentikasi.Autentication(token) ){
+//
+//            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
+//
+//            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+//
+//        }
 
 
         BaseResponse baseResponse = new BaseResponse( HttpStatus.OK, "200",service.getStatusBayar()," Data Status Pembayaran ");
@@ -137,17 +136,17 @@ public class PenjualanController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> setStatusTransaksi( @RequestBody RequestIdPenjualan request,
-                                                            @RequestHeader String token
+                                                            @RequestHeader(required = false) String token
     ){
 
-        // cek token
-        if ( autentikasi.Autentication(token) ){
-
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
-
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
-
-        }
+//        // cek token
+//        if ( autentikasi.Autentication(token) ){
+//
+//            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", request, "Harus Login");
+//
+//            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+//
+//        }
 
         if ( service.setStatusTransaksi( request ) ){
 
@@ -192,7 +191,7 @@ public class PenjualanController {
     @GetMapping(
             value = "/getRefundStatus"
     )
-    public ResponseEntity<BaseResponse> getRefundStatus(@RequestHeader String token){
+    public ResponseEntity<BaseResponse> getRefundStatus(@RequestHeader(required = false) String token){
 
         // cek token
         if ( autentikasi.Autentication(token) ){
@@ -214,7 +213,7 @@ public class PenjualanController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> setRefundStatus( @RequestBody RequestRefundStatus request,
-                                                         @RequestHeader String token
+                                                         @RequestHeader(required = false) String token
     ){
 
         // cek token
@@ -238,7 +237,7 @@ public class PenjualanController {
     }
 
     @GetMapping("/getRefund")
-    public ResponseEntity<BaseResponse> getRefund(@RequestHeader String token){
+    public ResponseEntity<BaseResponse> getRefund(@RequestHeader(required = false) String token){
 
         // cek token
         if ( autentikasi.Autentication(token) ){
@@ -260,7 +259,7 @@ public class PenjualanController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> setRefund( @RequestBody RequestSetRefund request,
-                                  @RequestHeader String token
+                                                   @RequestHeader(required = false) String token
     ){
 
         // cek token

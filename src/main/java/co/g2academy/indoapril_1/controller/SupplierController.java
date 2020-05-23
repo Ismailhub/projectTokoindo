@@ -25,7 +25,7 @@ public class SupplierController {
     @GetMapping("/getSuppliers")
     public ResponseEntity<BaseResponse> getSuppliers(@RequestParam(defaultValue = "0")Integer page,
                                                      @RequestParam(defaultValue = "100")Integer limit,
-                                                     @RequestHeader String token
+                                                     @RequestHeader(required = false) String token
     ){
 
         // cek token
@@ -45,7 +45,7 @@ public class SupplierController {
 
     // belum selesai
     @GetMapping("/getSuppliersAndProduct")
-    public ResponseEntity<BaseResponse> getSuppliersAndProduct(@RequestHeader String token){
+    public ResponseEntity<BaseResponse> getSuppliersAndProduct(@RequestHeader(required = false) String token){
 
         // cek token
         if ( autentikasi.Autentication(token) ){
@@ -67,7 +67,7 @@ public class SupplierController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> addSupplier( @RequestBody RequestSupplier request,
-                                                     @RequestHeader String token
+                                                     @RequestHeader(required = false) String token
     ){
 
         // cek token
@@ -115,7 +115,7 @@ public class SupplierController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> editSupplier( @RequestBody RequestSupplier request,
-                                                      @RequestHeader String token
+                                                      @RequestHeader(required = false) String token
     ){
 
         // cek token

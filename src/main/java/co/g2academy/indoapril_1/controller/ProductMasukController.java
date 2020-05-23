@@ -23,16 +23,16 @@ public class ProductMasukController {
     ServiceAdmin autentikasi;
 
     @GetMapping("/getProductMasuk")
-    public ResponseEntity<BaseResponse> getProductMasuk(@RequestHeader String token){
+    public ResponseEntity<BaseResponse> getProductMasuk(@RequestHeader(required = false) String token){
 
         // cek token
-        if ( autentikasi.Autentication(token) ){
-
-            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
-
-            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
-
-        }
+//        if ( autentikasi.Autentication(token) ){
+//
+//            BaseResponse baseResponse = new BaseResponse( HttpStatus.FORBIDDEN, "Ditolak", null, "Harus Login");
+//
+//            return new ResponseEntity<>( baseResponse, baseResponse.getCode() );
+//
+//        }
 
 
         BaseResponse baseResponse = new BaseResponse(HttpStatus.OK, "OK", service.getProductMasukList(), "Sukses");
@@ -47,7 +47,7 @@ public class ProductMasukController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<BaseResponse> addProductStock( @RequestBody List<RequestProductMasuk> request,
-                                                         @RequestHeader String token
+                                                         @RequestHeader(required = false) String token
     ) {
 
         // cek token
